@@ -2,322 +2,293 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AK Picture | Design Agency</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CUSTOM FONT INTEGRATION --- */
+        /* --- CUSTOM FONT --- */
         @font-face {
-    font-family: 'Negan DEMO';
-    src: url('Negan-DEMO-Regular.otf') format('opentype');
-}
+            font-family: 'Negan DEMO';
+            src: url('Negan-DEMO-Regular.otf') format('opentype');
+        }
 
         :root {
             --bg-black: #000000;
             --primary-white: #FFFFFF;
             --secondary-yellow: #FFD700; 
-            --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: var(--primary-white); overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background: var(--bg-black); color: var(--primary-white); 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; overflow-y: auto; 
+        }
+        body::-webkit-scrollbar { display: none; }
 
-        /* =========================================
-           --- 10S CINEMATIC INTRO ANIMATION --- 
-           ========================================= */
+        /* --- VIDEO BACKGROUND --- */
+        #video-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #video-bg-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
+        #video-bg-container::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.8) 100%);
+        }
+
+        /* --- 10S CINEMATIC INTRO --- */
         #intro-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-black); z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: opacity 1.5s, visibility 1.5s;
         }
         .intro-logo { 
-            font-family: 'Negan DEMO', sans-serif; 
-            font-size: clamp(3rem, 8vw, 5rem); color: var(--secondary-yellow); 
-            animation: cinematicReveal 3s cubic-bezier(0.16, 1, 0.3, 1) forwards, glowPulse 4s ease-in-out 3s infinite alternate;
-            text-align: center;
+            font-family: 'Negan DEMO', sans-serif; font-size: clamp(3rem, 10vw, 6rem); 
+            color: var(--secondary-yellow); text-align: center;
+            animation: cinematicReveal 3s forwards, glowPulse 4s infinite alternate;
         }
-        .intro-tagline {
-            margin-top: 15px; font-size: clamp(0.7rem, 2vw, 1rem); color: var(--primary-white);
-            letter-spacing: clamp(4px, 1vw, 8px); text-transform: uppercase; font-weight: 300;
-            opacity: 0; animation: slideUpFade 2s forwards 1.5s; 
-        }
-        .intro-duration-bar {
-            position: absolute; bottom: 20%; width: 200px; height: 1px;
-            background: rgba(255, 255, 255, 0.1); overflow: hidden;
-            opacity: 0; animation: fadeIn 1s forwards 2s;
-        }
-        .intro-duration-bar::after {
-            content: ''; display: block; width: 0%; height: 100%;
-            background: var(--secondary-yellow); box-shadow: 0 0 10px var(--secondary-yellow);
-            animation: fillDuration 8s linear forwards 2s; 
-        }
-
-        @keyframes cinematicReveal { 0% { opacity: 0; transform: scale(0.8); filter: blur(20px); letter-spacing: -10px; } 100% { opacity: 1; transform: scale(1); filter: blur(0px); letter-spacing: 5px; } }
-        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes glowPulse { 0% { text-shadow: 0 0 10px rgba(255,215,0,0); transform: scale(1); } 100% { text-shadow: 0 0 30px rgba(255,215,0,0.4); transform: scale(1.02); } }
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes fillDuration { to { width: 100%; } }
+        .intro-tagline { letter-spacing: 12px; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; opacity: 0; animation: fadeIn 2s forwards 2s; }
 
         /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; opacity: 0; transition: 1s; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 30px 6%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; opacity: 0; transition: 1s; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
-        .logo { font-size: clamp(1.5rem, 4vw, 2rem); font-family: 'Negan DEMO', sans-serif; color: var(--secondary-yellow); text-decoration: none; }
-        .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { color: var(--primary-white); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; transition: 0.3s;}
-        .nav-links a:hover { color: var(--secondary-yellow); }
+        .logo { font-size: 2rem; font-family: 'Negan DEMO', sans-serif; color: var(--secondary-yellow); text-decoration: none; }
+        .nav-links a { color: var(--primary-white); text-decoration: none; margin-left: 25px; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; }
 
-        /* =========================================
-           --- NEW: VIDEO HERO SECTION --- 
-           ========================================= */
-        #hero-video-section {
-            position: relative; width: 100%; height: 60vh; 
-            overflow: hidden; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transform: translateY(30px); transition: 1.5s 0.5s; margin-top: 80px; /* Offset for nav */
+        /* --- SECTION 1: HERO LANDING PAGE --- */
+        #hero-section {
+            height: 100vh; width: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: relative;
+            opacity: 0; transition: 1.5s 0.5s;
         }
-        #hero-video-section video {
-            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
-            transform: translate(-50%, -50%); object-fit: cover; z-index: 1; opacity: 0.4;
+        .hero-logo { font-family: 'Negan DEMO'; font-size: clamp(4rem, 18vw, 10rem); color: var(--secondary-yellow); line-height: 0.8; text-shadow: 0 0 20px rgba(255,215,0,0.3); }
+        .hero-tag { letter-spacing: 15px; text-transform: uppercase; font-size: clamp(0.8rem, 2vw, 1.2rem); margin: 20px 0 40px; opacity: 0.8; }
+        
+        .scroll-down-icon {
+            position: absolute; bottom: 120px; color: var(--secondary-yellow); font-size: 2rem;
+            animation: bounce 2s infinite; text-decoration: none; opacity: 0.7; transition: 0.3s;
         }
-        /* Put your SVG Logo in the center over the video */
-        .hero-center-logo {
-            position: relative; z-index: 2; width: 150px; /* Adjust size based on your SVG */
-            filter: drop-shadow(0px 0px 15px rgba(255, 215, 0, 0.5));
-        }
+        .scroll-down-icon:hover { opacity: 1; }
 
-        /* --- HORIZONTAL GALLERY --- */
-        #gallery-mount {
-            height: 40vh; /* Takes up remaining space below video */
-            display: flex; align-items: center; opacity: 0; transition: 1.5s 0.8s;
-            margin-bottom: 120px; /* Room for ticker and footer */
+        /* --- SECTION 2: GALLERY --- */
+        #gallery-section {
+            min-height: 100vh; width: 100%; display: flex; flex-direction: column;
+            justify-content: center; padding: 100px 0 150px; opacity: 0; transition: 1.5s 0.8s;
         }
-        .scroll-container { display: flex; gap: 30px; padding: 0 5%; overflow-x: auto; scrollbar-width: none; width: 100%; }
+        .gallery-title { text-align: center; color: var(--primary-white); font-weight: 300; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; font-size: 1.5rem; }
+        
+        /* --- INTERACTIVE DRAG SCROLL --- */
+        .scroll-container { 
+            display: flex; gap: 30px; padding: 0 8%; overflow-x: auto; 
+            scrollbar-width: none; 
+            cursor: grab; /* Shows hand icon */
+            -webkit-overflow-scrolling: touch; /* Smooth mobile swipe */
+        }
+        .scroll-container:active { cursor: grabbing; } /* Closed hand when dragging */
         .scroll-container::-webkit-scrollbar { display: none; }
         
-        /* Responsive Cards */
-        .folder-card {
-            flex: 0 0 280px; height: 35vh; background: #111; border: 1px solid #333;
-            border-radius: 10px; position: relative; cursor: pointer; overflow: hidden;
+        .folder-card { 
+            flex: 0 0 clamp(280px, 35vw, 420px); height: clamp(200px, 30vh, 280px); 
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); border-radius: 20px; position: relative; 
+            overflow: hidden; transition: var(--transition); user-select: none;
         }
-        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; }
+        /* Disable image drag to prevent browser conflicts */
+        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; pointer-events: none; }
+        .folder-card:hover { border-color: var(--secondary-yellow); transform: translateY(-10px); }
         .folder-card:hover img { opacity: 0.8; }
-        .folder-card h3 { position: absolute; bottom: 20px; left: 20px; font-size: 1.2rem; text-transform: uppercase; color: var(--secondary-yellow); }
+        .folder-card h3 { position: absolute; bottom: 20px; left: 20px; color: var(--secondary-yellow); text-transform: uppercase; font-size: 1.2rem; pointer-events: none; }
 
-        /* --- SLOWER AUTO SCROLL SERVICES --- */
-        .services-ticker {
-            position: fixed; bottom: 70px; width: 100%; background: var(--secondary-yellow);
-            color: var(--bg-black); padding: 10px 0; font-weight: 900; text-transform: uppercase;
-            overflow: hidden; white-space: nowrap; opacity: 0; transition: 1s; z-index: 10; font-size: 0.8rem;
-        }
-        /* Changed animation speed from 20s to 40s to make it slower */
-        .ticker-content { display: inline-block; animation: ticker 40s linear infinite; }
-        .ticker-content span { margin: 0; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-        /* --- PANELS --- */
+        /* --- SUB-MENU PANEL --- */
         .panel {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--bg-black); z-index: 5000; transform: translateX(100%);
-            transition: var(--transition); padding: 100px 5% 100px; overflow-y: auto;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 5000; visibility: hidden; opacity: 0; transform: scale(1.05);
+            transition: 0.5s ease-in-out; padding: 100px 8% 80px; overflow-y: auto;
         }
-        .panel.active { transform: translateX(0); }
-        .close-btn { position: fixed; top: 20px; right: 5%; font-size: 2.5rem; color: var(--secondary-yellow); cursor: pointer; }
+        .panel.active { visibility: visible; opacity: 1; transform: scale(1); }
+        .close-btn { position: fixed; top: 30px; right: 6%; font-size: 3rem; color: var(--secondary-yellow); cursor: pointer; z-index: 5100; }
+        
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .sub-card { background: #111; border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #222; }
+        .sub-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+        .sub-card button { background: var(--secondary-yellow); color: #000; border: none; width: 100%; padding: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .sub-card button:hover { background: #fff; }
 
-        .responsive-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;
-        }
-
-        /* --- ENQUIRY DIALOGUE --- */
-        .enquiry-dialog {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 350px; background: #111; padding: 25px; border: 1px solid var(--secondary-yellow);
-            z-index: 6000; border-radius: 10px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
-        }
-        .enquiry-dialog label { font-size: 0.7rem; color: var(--secondary-yellow); text-transform: uppercase; }
-        .enquiry-dialog input { width: 100%; padding: 12px; margin: 8px 0 15px; background: #000; border: 1px solid #333; color: #fff; font-family: inherit;}
-        .calc-box { margin-top: 10px; padding: 15px; background: var(--secondary-yellow); color: #000; font-weight: 900; text-align: center; border-radius: 5px; }
-
-        /* --- FOOTER --- */
+        /* --- FIXED FOOTER --- */
         footer {
-            position: fixed; bottom: 0; width: 100%; padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            background: #000; border-top: 1px solid #222; opacity: 0; transition: 1s; z-index: 100; flex-wrap: wrap;
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: var(--secondary-yellow); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 6%; z-index: 100; opacity: 0; transition: 1s;
         }
-        .social-icons a { color: var(--secondary-yellow); font-size: 1.2rem; margin-right: 15px; text-decoration: none; transition: 0.3s; }
+        .footer-ticker { flex: 1; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); }
+        .ticker-content { display: inline-block; animation: ticker 40s linear infinite; color: #000; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; }
+        
+        .footer-fixed { display: flex; align-items: center; background: var(--secondary-yellow); padding-left: 20px; z-index: 2; }
+        .footer-fixed a { color: #000; font-size: 1.3rem; margin-left: 15px; text-decoration: none; }
+        .phone-num { font-weight: 900; margin-left: 15px; color: #000; font-size: 0.9rem; letter-spacing: 1px;}
 
-        /* STATE CHANGES */
-        body.loaded #intro-layer { transform: translateY(-100%); }
-        body.loaded nav, body.loaded #hero-video-section, body.loaded #gallery-mount, body.loaded .services-ticker, body.loaded footer { opacity: 1; transform: translateY(0); }
+        /* KEYFRAMES */
+        @keyframes cinematicReveal { 0% { opacity: 0; filter: blur(20px); transform: scale(0.9); } 100% { opacity: 1; filter: blur(0px); transform: scale(1); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes glowPulse { from { text-shadow: 0 0 5px rgba(255,215,0,0); } to { text-shadow: 0 0 20px rgba(255,215,0,0.6); } }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
 
-        /* =========================================
-           --- MOBILE SPECIFIC ADJUSTMENTS --- 
-           ========================================= */
-        @media (max-width: 768px) {
-            #hero-video-section { height: 40vh; margin-top: 70px; }
-            .hero-center-logo { width: 100px; }
-            #gallery-mount { height: 45vh; align-items: flex-start; margin-top: 20px; }
-            .folder-card { flex: 0 0 240px; height: 35vh; }
-            .nav-links a { font-size: 0.7rem; margin-left: 0; }
-            footer { justify-content: center; gap: 10px; flex-direction: column; }
-        }
-        /* PC/Desktop adjustments */
-        @media (min-width: 1024px) {
-            .folder-card { flex: 0 0 350px; height: 40vh; }
+        /* LOADED STATE */
+        body.loaded #intro-layer { opacity: 0; visibility: hidden; pointer-events: none; }
+        body.loaded nav, body.loaded #hero-section, body.loaded #gallery-section, body.loaded footer { opacity: 1; }
+
+        @media (max-width: 600px) {
+            nav { padding: 20px 6%; }
+            .nav-links a { margin-left: 15px; font-size: 0.7rem; }
+            footer { height: auto; flex-direction: column; padding: 10px; }
+            .footer-fixed { padding-left: 0; padding-top: 5px; }
+            .scroll-down-icon { bottom: 150px; }
         }
     </style>
 </head>
-<body>
+<body id="body-main">
+
+    <div id="video-bg-container">
+        <video autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
+    </div>
 
     <div id="intro-layer">
         <div class="intro-logo">AK Picture</div>
         <div class="intro-tagline">Design Agency</div>
-        <div class="intro-duration-bar"></div>
     </div>
 
     <nav>
         <a href="#" class="logo">AK</a>
         <div class="nav-links">
-            <a href="https://wa.me/916374506309?text=Hello%20AK%20Picture!%20I%20would%20like%20to%20discuss%20a%20project." target="_blank">Lets Talk</a>
-            <a onclick="closePanels()">Gallery</a>
+            <a href="https://wa.me/916374506309" target="_blank">Contact</a>
+            <a href="#gallery-section">Gallery</a>
         </div>
     </nav>
 
-    <section id="hero-video-section">
-        <video autoplay muted loop playsinline>
-            <source src="akbg.mp4" type="video/mp4">
-        </video>
-        <img src="logo.svg" alt="AK Picture Logo" class="hero-center-logo" onerror="this.src='https://via.placeholder.com/150?text=SVG+LOGO'">
+    <section id="hero-section">
+        <h1 class="hero-logo">AK</h1>
+        <p class="hero-tag">Design Agency</p>
+        <a href="#gallery-section" class="scroll-down-icon"><i class="fas fa-chevron-down"></i></a>
     </section>
 
-    <main id="gallery-mount">
+    <section id="gallery-section">
+        <h2 class="gallery-title">Explore Portfolios</h2>
         <div class="scroll-container" id="mainTrack"></div>
-    </main>
-
-    <div class="services-ticker">
-        <div class="ticker-content">
-            <span>Our Services • Packaging Offers • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • </span>
-            <span>Our Services • Packaging Offers • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • </span>
-        </div>
-    </div>
+    </section>
 
     <div id="subGallery" class="panel">
-        <span class="close-btn" onclick="closePanels()">&times;</span>
-        <h2 id="subHeader" style="color: var(--secondary-yellow); margin-bottom: 20px; font-size: clamp(2rem, 5vw, 3rem); text-transform: uppercase;">CATEGORY</h2>
-        <div class="responsive-grid" id="verticalGrid"></div>
-    </div>
-
-    <div id="enquiry-box" class="enquiry-dialog">
-        <h3 style="color:var(--secondary-yellow); margin-bottom: 10px;">Enquiry Form</h3>
-        <p id="item-display" style="font-size: 0.8rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;"></p>
-        
-        <label>Quantity</label>
-        <input type="number" id="qty" value="1" oninput="calculate()">
-        
-        <label>Price Per Unit (₹)</label>
-        <input type="number" id="price" oninput="calculate()">
-        
-        <div class="calc-box">
-            SUB TOTAL: ₹ <span id="total">0</span>
-        </div>
-        
-        <button onclick="sendWA()" style="width:100%; background:white; color:#000; border:none; margin-top:15px; padding:12px; font-weight:bold; cursor:pointer; border-radius:5px;">SEND VIA WHATSAPP</button>
-        <button onclick="closeEnquiry()" style="width:100%; background:none; border:none; color:#888; margin-top:10px; cursor:pointer; font-size: 0.75rem;">Cancel</button>
+        <span class="close-btn" onclick="closeSub()">&times;</span>
+        <h2 id="subHeader" style="color: var(--secondary-yellow); text-transform: uppercase; letter-spacing: 4px; text-align:center; font-size: clamp(2rem, 5vw, 3rem);">Category</h2>
+        <div class="sub-grid" id="verticalGrid"></div>
     </div>
 
     <footer>
-        <div class="social-icons">
-            <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+        <div class="footer-ticker">
+            <div class="ticker-content">
+                <span>Branding • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • Packaging • </span>
+                <span>Branding • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • Packaging • </span>
+            </div>
         </div>
-        <div style="font-size: 0.7rem; letter-spacing: 2px;">TENKASI | SIVAKASI | 6374506309</div>
+        <div class="footer-fixed">
+            <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <div class="phone-num">6374506309</div>
+        </div>
     </footer>
 
     <script>
-        const priceList = {
-            "Album Design": 70,
-            "Invitation Card": 15,
-            "Cinematic Videos": 500,
-            "Poster Design": 250,
-            "Photo Frames": 180,
-            "Mockup Design": 450,
-            "Packaging Design": 300,
-            "Calender Design": 120
-        };
+        const categories = ["Album Design", "Invitation Card", "Cinematic Videos", "Poster Design", "Photo Frames", "Mockup Design", "Packaging", "Calender"];
 
-        const categories = Object.keys(priceList);
-
-        // 1. 10 SECOND INTRO TIMER
+        // Intro Timer
         setTimeout(() => { document.body.classList.add('loaded'); }, 10000);
 
-        // 2. RENDER MAIN GALLERY
+        // Build Gallery
         const track = document.getElementById('mainTrack');
         categories.forEach(cat => {
             const card = document.createElement('div');
             card.className = 'folder-card';
-            card.onclick = () => openSubGallery(cat);
-            card.innerHTML = `<img src="https://picsum.photos/seed/${cat}/800/1000"><h3>${cat}</h3>`;
+            card.innerHTML = `<img src="https://picsum.photos/seed/${cat}/800/500"><h3>${cat}</h3>`;
+            
+            // Allow clicking to open sub-menu (but prevent triggering if user is just dragging)
+            card.addEventListener('click', (e) => {
+                if(!isDragging) openSub(cat);
+            });
             track.appendChild(card);
         });
 
-        // 3. OPEN VERTICAL SUB GALLERY (Responsive Grid)
-        function openSubGallery(name) {
+        // --- CUSTOM DRAG-TO-SCROLL LOGIC ---
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let isDragging = false; // Distinguish between a click and a drag
+
+        track.addEventListener('mousedown', (e) => {
+            isDown = true;
+            isDragging = false;
+            track.classList.add('active');
+            startX = e.pageX - track.offsetLeft;
+            scrollLeft = track.scrollLeft;
+        });
+
+        track.addEventListener('mouseleave', () => {
+            isDown = false;
+            track.classList.remove('active');
+        });
+
+        track.addEventListener('mouseup', () => {
+            isDown = false;
+            track.classList.remove('active');
+            // Small delay to allow click events to evaluate isDragging
+            setTimeout(() => { isDragging = false; }, 50); 
+        });
+
+        track.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            isDragging = true; // User is moving the mouse, so it's a drag
+            const x = e.pageX - track.offsetLeft;
+            const walk = (x - startX) * 2; // Scroll speed multiplier
+            track.scrollLeft = scrollLeft - walk;
+        });
+
+        // Mouse Wheel scrolling
+        track.addEventListener('wheel', (e) => { 
+            if (e.deltaY !== 0) { 
+                e.preventDefault(); 
+                track.scrollLeft += e.deltaY; 
+            } 
+        });
+
+        // --- SUB MENU LOGIC ---
+        function openSub(name) {
             document.getElementById('subHeader').innerText = name;
             const grid = document.getElementById('verticalGrid');
             grid.innerHTML = '';
-            for(let i=1; i<=6; i++) {
+            for(let i=1; i<=8; i++) {
                 grid.innerHTML += `
-                    <div style="background:#111; border:1px solid #222; border-radius:10px; padding:20px; text-align:center">
-                        <img src="https://picsum.photos/seed/${name}${i}/400/500" style="width:100%; border-radius:5px; margin-bottom:15px; object-fit: cover; aspect-ratio: 4/5;">
-                        <p style="font-size:0.8rem; margin-bottom:15px; color:#888; text-transform: uppercase;">${name} Style ${i}</p>
-                        <button onclick="openEnquiry('${name}', ${priceList[name]})" style="background:var(--secondary-yellow); color:#000; border:none; padding:12px; font-weight:bold; cursor:pointer; width:100%; border-radius:5px">ENQUIRY</button>
+                    <div class="sub-card">
+                        <img src="https://picsum.photos/seed/${name}${i}/500/500">
+                        <p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${name.toUpperCase()} STYLE 0${i}</p>
+                        <button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${name}', '_blank')">ENQUIRY</button>
                     </div>`;
             }
             document.getElementById('subGallery').classList.add('active');
+            document.body.style.overflowY = 'hidden'; 
         }
 
-        // 4. ENQUIRY LOGIC
-        function openEnquiry(name, basePrice) {
-            document.getElementById('item-display').innerText = name;
-            document.getElementById('price').value = basePrice;
-            document.getElementById('qty').value = 1;
-            document.getElementById('enquiry-box').style.display = 'block';
-            calculate();
+        function closeSub() { 
+            document.getElementById('subGallery').classList.remove('active'); 
+            document.body.style.overflowY = 'auto'; 
         }
-
-        function calculate() {
-            const q = document.getElementById('qty').value || 0;
-            const p = document.getElementById('price').value || 0;
-            document.getElementById('total').innerText = (q * p).toLocaleString();
-        }
-
-        function sendWA() {
-            const item = document.getElementById('item-display').innerText;
-            const q = document.getElementById('qty').value;
-            const p = document.getElementById('price').value;
-            const t = document.getElementById('total').innerText;
-            const text = `*New Order Enquiry*%0A%0A*Item:* ${item}%0A*Quantity:* ${q}%0A*Price Per Unit:* ₹${p}%0A*Estimated Total:* ₹${t}`;
-            window.open(`https://wa.me/916374506309?text=${text}`, '_blank');
-            closeEnquiry();
-        }
-
-        function closeEnquiry() { document.getElementById('enquiry-box').style.display = 'none'; }
-        function closePanels() { document.getElementById('subGallery').classList.remove('active'); }
-
-        // Horizontal scrolling for PC users
-        track.addEventListener('wheel', (e) => { 
-            // Only prevent default if scrolling horizontally to avoid breaking vertical scroll on mobile
-            if (e.deltaY !== 0) {
-                e.preventDefault(); 
-                track.scrollLeft += e.deltaY; 
-            }
-        });
     </script>
 </body>
 </html>
