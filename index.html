@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Picture | Design Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CUSTOM FONT INTEGRATION --- */
+        @font-face {
+            font-family: 'Negan DEMO';
+            src: url('Negan-DEMO-Regular.woff2') format('woff2'),
+                 url('Negan-DEMO-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --bg-black: #000000;
+            --primary-white: #FFFFFF;
+            --secondary-yellow: #FFD700; 
+            --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: var(--primary-white); overflow: hidden; }
+
+        /* =========================================
+           --- 10S CINEMATIC INTRO ANIMATION --- 
+           ========================================= */
+        #intro-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-black); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        
+        .intro-logo { 
+            font-family: 'Negan DEMO', sans-serif; 
+            font-size: 5rem; color: var(--secondary-yellow); 
+            /* 1. Blur to sharp, expanding letter spacing */
+            animation: cinematicReveal 3s cubic-bezier(0.16, 1, 0.3, 1) forwards, 
+                       glowPulse 4s ease-in-out 3s infinite alternate;
+        }
+        
+        .intro-tagline {
+            margin-top: 15px; font-size: 1rem; color: var(--primary-white);
+            letter-spacing: 8px; text-transform: uppercase; font-weight: 300;
+            opacity: 0; 
+            /* 2. Slides up elegantly after logo appears */
+            animation: slideUpFade 2s forwards 1.5s; 
+        }
+
+        /* 3. The 10-Second Progress Line */
+        .intro-duration-bar {
+            position: absolute; bottom: 20%; width: 250px; height: 1px;
+            background: rgba(255, 255, 255, 0.1); overflow: hidden;
+            opacity: 0; animation: fadeIn 1s forwards 2s;
+        }
+        .intro-duration-bar::after {
+            content: ''; display: block; width: 0%; height: 100%;
+            background: var(--secondary-yellow);
+            box-shadow: 0 0 10px var(--secondary-yellow);
+            /* Fills exactly up to the 10-second mark */
+            animation: fillDuration 8s linear forwards 2s; 
+        }
+
+        /* Intro Keyframes */
+        @keyframes cinematicReveal {
+            0% { opacity: 0; transform: scale(0.8); filter: blur(20px); letter-spacing: -10px; }
+            100% { opacity: 1; transform: scale(1); filter: blur(0px); letter-spacing: 5px; }
+        }
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 10px rgba(255,215,0,0); transform: scale(1); }
+            100% { text-shadow: 0 0 30px rgba(255,215,0,0.4); transform: scale(1.02); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes fillDuration { to { width: 100%; } }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; opacity: 0; transition: 1s;
+        }
+        .logo { 
+            font-size: 2rem; font-family: 'Negan DEMO', sans-serif; 
+            color: var(--secondary-yellow); text-decoration: none; 
+        }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { color: var(--primary-white); text-decoration: none; margin-left: 30px; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; transition: 0.3s;}
+        .nav-links a:hover { color: var(--secondary-yellow); }
+
+        /* --- HORIZONTAL GALLERY --- */
+        #gallery-mount {
+            height: 100vh; display: flex; align-items: center;
+            opacity: 0; transform: translateY(50px); transition: 1.5s;
+        }
+        .scroll-container { display: flex; gap: 50px; padding: 0 10%; overflow-x: auto; scrollbar-width: none; width: 100%; }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .folder-card {
+            flex: 0 0 400px; height: 55vh; background: #111; border: 1px solid #333;
+            border-radius: 10px; position: relative; cursor: pointer; overflow: hidden;
+        }
+        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; }
+        .folder-card:hover img { opacity: 0.8; }
+        .folder-card h3 { position: absolute; bottom: 30px; left: 30px; font-size: 1.5rem; text-transform: uppercase; color: var(--secondary-yellow); }
+
+        /* --- AUTO SCROLL SERVICES --- */
+        .services-ticker {
+            position: fixed; bottom: 85px; width: 100%; background: var(--secondary-yellow);
+            color: var(--bg-black); padding: 12px 0; font-weight: 900; text-transform: uppercase;
+            overflow: hidden; white-space: nowrap; opacity: 0; transition: 1s; z-index: 10;
+        }
+        .ticker-content { display: inline-block; animation: ticker 20s linear infinite; }
+        .ticker-content span { margin: 0; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- PANELS --- */
+        .panel {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-black); z-index: 5000; transform: translateX(100%);
+            transition: var(--transition); padding: 120px 8% 100px; overflow-y: auto;
+        }
+        .panel.active { transform: translateX(0); }
+        .close-btn { position: fixed; top: 40px; right: 8%; font-size: 3rem; color: var(--secondary-yellow); cursor: pointer; }
+
+        /* --- ENQUIRY DIALOGUE --- */
+        .enquiry-dialog {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 350px; background: #111; padding: 30px; border: 1px solid var(--secondary-yellow);
+            z-index: 6000; border-radius: 10px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+        }
+        .enquiry-dialog label { font-size: 0.7rem; color: var(--secondary-yellow); text-transform: uppercase; }
+        .enquiry-dialog input { width: 100%; padding: 12px; margin: 8px 0 15px; background: #000; border: 1px solid #333; color: #fff; font-family: inherit;}
+        .calc-box { margin-top: 10px; padding: 15px; background: var(--secondary-yellow); color: #000; font-weight: 900; text-align: center; border-radius: 5px; }
+
+        /* --- FOOTER (SOCIALS) --- */
+        footer {
+            position: fixed; bottom: 0; width: 100%; padding: 25px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #000; border-top: 1px solid #222; opacity: 0; transition: 1s; z-index: 100;
+        }
+        .social-icons a { color: var(--secondary-yellow); font-size: 1.4rem; margin-right: 25px; cursor: pointer; text-decoration: none; transition: 0.3s; }
+        .social-icons a:hover { color: var(--primary-white); transform: translateY(-3px); display: inline-block; }
+
+        /* STATE CHANGES */
+        body.loaded #intro-layer { transform: translateY(-100%); }
+        body.loaded nav, body.loaded #gallery-mount, body.loaded .services-ticker, body.loaded footer { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div id="intro-layer">
+        <div class="intro-logo">AK Picture</div>
+        <div class="intro-tagline">Design Agency</div>
+        <div class="intro-duration-bar"></div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo">AK Picture</a>
+        <div class="nav-links">
+            <a href="https://wa.me/916374506309?text=Hello%20AK%20Picture!%20I%20would%20like%20to%20discuss%20a%20project." target="_blank">Lets Talk</a>
+            <a onclick="closePanels()">My Gallery</a>
+        </div>
+    </nav>
+
+    <main id="gallery-mount">
+        <div class="scroll-container" id="mainTrack"></div>
+    </main>
+
+    <div class="services-ticker">
+        <div class="ticker-content">
+            <span>Our Services • Packaging Offers • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • </span>
+            <span>Our Services • Packaging Offers • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • </span>
+        </div>
+    </div>
+
+    <div id="subGallery" class="panel">
+        <span class="close-btn" onclick="closePanels()">&times;</span>
+        <h2 id="subHeader" style="color: var(--secondary-yellow); margin-bottom: 20px; font-size: 2.5rem; text-transform: uppercase;">CATEGORY</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;" id="verticalGrid"></div>
+    </div>
+
+    <div id="enquiry-box" class="enquiry-dialog">
+        <h3 style="color:var(--secondary-yellow); margin-bottom: 10px;">Enquiry Form</h3>
+        <p id="item-display" style="font-size: 0.8rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;"></p>
+        
+        <label>Quantity</label>
+        <input type="number" id="qty" value="1" oninput="calculate()">
+        
+        <label>Price Per Unit (₹)</label>
+        <input type="number" id="price" oninput="calculate()">
+        
+        <div class="calc-box">
+            SUB TOTAL: ₹ <span id="total">0</span>
+        </div>
+        
+        <button onclick="sendWA()" style="width:100%; background:white; color:#000; border:none; margin-top:15px; padding:12px; font-weight:bold; cursor:pointer; border-radius:5px;">SEND VIA WHATSAPP</button>
+        <button onclick="closeEnquiry()" style="width:100%; background:none; border:none; color:#888; margin-top:10px; cursor:pointer; font-size: 0.75rem;">Cancel</button>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+        </div>
+        <div style="font-size: 0.7rem; letter-spacing: 2px;">TENKASI | SIVAKASI | 6374506309</div>
+    </footer>
+
+    <script>
+        const priceList = {
+            "Album Design": 70,
+            "Invitation Card": 15,
+            "Cinematic Videos": 500,
+            "Poster Design": 250,
+            "Photo Frames": 180,
+            "Mockup Design": 450,
+            "Packaging Design": 300,
+            "Calender Design": 120
+        };
+
+        const categories = Object.keys(priceList);
+
+        // 1. 10 SECOND INTRO TIMER
+        setTimeout(() => { document.body.classList.add('loaded'); }, 10000);
+
+        // 2. RENDER MAIN GALLERY
+        const track = document.getElementById('mainTrack');
+        categories.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'folder-card';
+            card.onclick = () => openSubGallery(cat);
+            card.innerHTML = `<img src="https://picsum.photos/seed/${cat}/800/1000"><h3>${cat}</h3>`;
+            track.appendChild(card);
+        });
+
+        // 3. OPEN VERTICAL SUB GALLERY
+        function openSubGallery(name) {
+            document.getElementById('subHeader').innerText = name;
+            const grid = document.getElementById('verticalGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=6; i++) {
+                grid.innerHTML += `
+                    <div style="background:#111; border:1px solid #222; border-radius:10px; padding:20px; text-align:center">
+                        <img src="https://picsum.photos/seed/${name}${i}/400/500" style="width:100%; border-radius:5px; margin-bottom:15px; object-fit: cover;">
+                        <p style="font-size:0.8rem; margin-bottom:15px; color:#888; text-transform: uppercase;">${name} Style ${i}</p>
+                        <button onclick="openEnquiry('${name}', ${priceList[name]})" style="background:var(--secondary-yellow); color:#000; border:none; padding:12px; font-weight:bold; cursor:pointer; width:100%; border-radius:5px">ENQUIRY</button>
+                    </div>`;
+            }
+            document.getElementById('subGallery').classList.add('active');
+        }
+
+        // 4. ENQUIRY CALCULATION LOGIC
+        function openEnquiry(name, basePrice) {
+            document.getElementById('item-display').innerText = name;
+            document.getElementById('price').value = basePrice;
+            document.getElementById('qty').value = 1;
+            document.getElementById('enquiry-box').style.display = 'block';
+            calculate();
+        }
+
+        function calculate() {
+            const q = document.getElementById('qty').value || 0;
+            const p = document.getElementById('price').value || 0;
+            document.getElementById('total').innerText = (q * p).toLocaleString();
+        }
+
+        function sendWA() {
+            const item = document.getElementById('item-display').innerText;
+            const q = document.getElementById('qty').value;
+            const p = document.getElementById('price').value;
+            const t = document.getElementById('total').innerText;
+            const text = `*New Order Enquiry*%0A%0A*Item:* ${item}%0A*Quantity:* ${q}%0A*Price Per Unit:* ₹${p}%0A*Estimated Total:* ₹${t}`;
+            window.open(`https://wa.me/916374506309?text=${text}`, '_blank');
+            closeEnquiry();
+        }
+
+        function closeEnquiry() { document.getElementById('enquiry-box').style.display = 'none'; }
+        function closePanels() { document.getElementById('subGallery').classList.remove('active'); }
+
+        // Main gallery horizontal scrolling
+        track.addEventListener('wheel', (e) => { e.preventDefault(); track.scrollLeft += e.deltaY; });
+    </script>
+</body>
+</html>
