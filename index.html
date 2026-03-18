@@ -13,8 +13,7 @@
             font-family: 'Negan DEMO';
             src: url('Negan-DEMO-Regular.woff2') format('woff2'),
                  url('Negan-DEMO-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-weight: normal; font-style: normal;
         }
 
         :root {
@@ -25,7 +24,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: var(--primary-white); overflow: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: var(--primary-white); overflow-x: hidden; }
 
         /* =========================================
            --- 10S CINEMATIC INTRO ANIMATION --- 
@@ -36,89 +35,89 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
         }
-        
         .intro-logo { 
             font-family: 'Negan DEMO', sans-serif; 
-            font-size: 5rem; color: var(--secondary-yellow); 
-            /* 1. Blur to sharp, expanding letter spacing */
-            animation: cinematicReveal 3s cubic-bezier(0.16, 1, 0.3, 1) forwards, 
-                       glowPulse 4s ease-in-out 3s infinite alternate;
+            font-size: clamp(3rem, 8vw, 5rem); color: var(--secondary-yellow); 
+            animation: cinematicReveal 3s cubic-bezier(0.16, 1, 0.3, 1) forwards, glowPulse 4s ease-in-out 3s infinite alternate;
+            text-align: center;
         }
-        
         .intro-tagline {
-            margin-top: 15px; font-size: 1rem; color: var(--primary-white);
-            letter-spacing: 8px; text-transform: uppercase; font-weight: 300;
-            opacity: 0; 
-            /* 2. Slides up elegantly after logo appears */
-            animation: slideUpFade 2s forwards 1.5s; 
+            margin-top: 15px; font-size: clamp(0.7rem, 2vw, 1rem); color: var(--primary-white);
+            letter-spacing: clamp(4px, 1vw, 8px); text-transform: uppercase; font-weight: 300;
+            opacity: 0; animation: slideUpFade 2s forwards 1.5s; 
         }
-
-        /* 3. The 10-Second Progress Line */
         .intro-duration-bar {
-            position: absolute; bottom: 20%; width: 250px; height: 1px;
+            position: absolute; bottom: 20%; width: 200px; height: 1px;
             background: rgba(255, 255, 255, 0.1); overflow: hidden;
             opacity: 0; animation: fadeIn 1s forwards 2s;
         }
         .intro-duration-bar::after {
             content: ''; display: block; width: 0%; height: 100%;
-            background: var(--secondary-yellow);
-            box-shadow: 0 0 10px var(--secondary-yellow);
-            /* Fills exactly up to the 10-second mark */
+            background: var(--secondary-yellow); box-shadow: 0 0 10px var(--secondary-yellow);
             animation: fillDuration 8s linear forwards 2s; 
         }
 
-        /* Intro Keyframes */
-        @keyframes cinematicReveal {
-            0% { opacity: 0; transform: scale(0.8); filter: blur(20px); letter-spacing: -10px; }
-            100% { opacity: 1; transform: scale(1); filter: blur(0px); letter-spacing: 5px; }
-        }
-        @keyframes slideUpFade {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes glowPulse {
-            0% { text-shadow: 0 0 10px rgba(255,215,0,0); transform: scale(1); }
-            100% { text-shadow: 0 0 30px rgba(255,215,0,0.4); transform: scale(1.02); }
-        }
+        @keyframes cinematicReveal { 0% { opacity: 0; transform: scale(0.8); filter: blur(20px); letter-spacing: -10px; } 100% { opacity: 1; transform: scale(1); filter: blur(0px); letter-spacing: 5px; } }
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes glowPulse { 0% { text-shadow: 0 0 10px rgba(255,215,0,0); transform: scale(1); } 100% { text-shadow: 0 0 30px rgba(255,215,0,0.4); transform: scale(1.02); } }
         @keyframes fadeIn { to { opacity: 1; } }
         @keyframes fillDuration { to { width: 100%; } }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 30px 8%;
+            position: fixed; top: 0; width: 100%; padding: 20px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; opacity: 0; transition: 1s;
+            z-index: 1000; opacity: 0; transition: 1s; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
         }
-        .logo { 
-            font-size: 2rem; font-family: 'Negan DEMO', sans-serif; 
-            color: var(--secondary-yellow); text-decoration: none; 
-        }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { color: var(--primary-white); text-decoration: none; margin-left: 30px; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; transition: 0.3s;}
+        .logo { font-size: clamp(1.5rem, 4vw, 2rem); font-family: 'Negan DEMO', sans-serif; color: var(--secondary-yellow); text-decoration: none; }
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { color: var(--primary-white); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; transition: 0.3s;}
         .nav-links a:hover { color: var(--secondary-yellow); }
+
+        /* =========================================
+           --- NEW: VIDEO HERO SECTION --- 
+           ========================================= */
+        #hero-video-section {
+            position: relative; width: 100%; height: 60vh; 
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(30px); transition: 1.5s 0.5s; margin-top: 80px; /* Offset for nav */
+        }
+        #hero-video-section video {
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%); object-fit: cover; z-index: 1; opacity: 0.4;
+        }
+        /* Put your SVG Logo in the center over the video */
+        .hero-center-logo {
+            position: relative; z-index: 2; width: 150px; /* Adjust size based on your SVG */
+            filter: drop-shadow(0px 0px 15px rgba(255, 215, 0, 0.5));
+        }
 
         /* --- HORIZONTAL GALLERY --- */
         #gallery-mount {
-            height: 100vh; display: flex; align-items: center;
-            opacity: 0; transform: translateY(50px); transition: 1.5s;
+            height: 40vh; /* Takes up remaining space below video */
+            display: flex; align-items: center; opacity: 0; transition: 1.5s 0.8s;
+            margin-bottom: 120px; /* Room for ticker and footer */
         }
-        .scroll-container { display: flex; gap: 50px; padding: 0 10%; overflow-x: auto; scrollbar-width: none; width: 100%; }
+        .scroll-container { display: flex; gap: 30px; padding: 0 5%; overflow-x: auto; scrollbar-width: none; width: 100%; }
         .scroll-container::-webkit-scrollbar { display: none; }
+        
+        /* Responsive Cards */
         .folder-card {
-            flex: 0 0 400px; height: 55vh; background: #111; border: 1px solid #333;
+            flex: 0 0 280px; height: 35vh; background: #111; border: 1px solid #333;
             border-radius: 10px; position: relative; cursor: pointer; overflow: hidden;
         }
         .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; }
         .folder-card:hover img { opacity: 0.8; }
-        .folder-card h3 { position: absolute; bottom: 30px; left: 30px; font-size: 1.5rem; text-transform: uppercase; color: var(--secondary-yellow); }
+        .folder-card h3 { position: absolute; bottom: 20px; left: 20px; font-size: 1.2rem; text-transform: uppercase; color: var(--secondary-yellow); }
 
-        /* --- AUTO SCROLL SERVICES --- */
+        /* --- SLOWER AUTO SCROLL SERVICES --- */
         .services-ticker {
-            position: fixed; bottom: 85px; width: 100%; background: var(--secondary-yellow);
-            color: var(--bg-black); padding: 12px 0; font-weight: 900; text-transform: uppercase;
-            overflow: hidden; white-space: nowrap; opacity: 0; transition: 1s; z-index: 10;
+            position: fixed; bottom: 70px; width: 100%; background: var(--secondary-yellow);
+            color: var(--bg-black); padding: 10px 0; font-weight: 900; text-transform: uppercase;
+            overflow: hidden; white-space: nowrap; opacity: 0; transition: 1s; z-index: 10; font-size: 0.8rem;
         }
-        .ticker-content { display: inline-block; animation: ticker 20s linear infinite; }
+        /* Changed animation speed from 20s to 40s to make it slower */
+        .ticker-content { display: inline-block; animation: ticker 40s linear infinite; }
         .ticker-content span { margin: 0; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
@@ -126,33 +125,52 @@
         .panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--bg-black); z-index: 5000; transform: translateX(100%);
-            transition: var(--transition); padding: 120px 8% 100px; overflow-y: auto;
+            transition: var(--transition); padding: 100px 5% 100px; overflow-y: auto;
         }
         .panel.active { transform: translateX(0); }
-        .close-btn { position: fixed; top: 40px; right: 8%; font-size: 3rem; color: var(--secondary-yellow); cursor: pointer; }
+        .close-btn { position: fixed; top: 20px; right: 5%; font-size: 2.5rem; color: var(--secondary-yellow); cursor: pointer; }
+
+        .responsive-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;
+        }
 
         /* --- ENQUIRY DIALOGUE --- */
         .enquiry-dialog {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 350px; background: #111; padding: 30px; border: 1px solid var(--secondary-yellow);
+            width: 90%; max-width: 350px; background: #111; padding: 25px; border: 1px solid var(--secondary-yellow);
             z-index: 6000; border-radius: 10px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
         }
         .enquiry-dialog label { font-size: 0.7rem; color: var(--secondary-yellow); text-transform: uppercase; }
         .enquiry-dialog input { width: 100%; padding: 12px; margin: 8px 0 15px; background: #000; border: 1px solid #333; color: #fff; font-family: inherit;}
         .calc-box { margin-top: 10px; padding: 15px; background: var(--secondary-yellow); color: #000; font-weight: 900; text-align: center; border-radius: 5px; }
 
-        /* --- FOOTER (SOCIALS) --- */
+        /* --- FOOTER --- */
         footer {
-            position: fixed; bottom: 0; width: 100%; padding: 25px 8%;
+            position: fixed; bottom: 0; width: 100%; padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            background: #000; border-top: 1px solid #222; opacity: 0; transition: 1s; z-index: 100;
+            background: #000; border-top: 1px solid #222; opacity: 0; transition: 1s; z-index: 100; flex-wrap: wrap;
         }
-        .social-icons a { color: var(--secondary-yellow); font-size: 1.4rem; margin-right: 25px; cursor: pointer; text-decoration: none; transition: 0.3s; }
-        .social-icons a:hover { color: var(--primary-white); transform: translateY(-3px); display: inline-block; }
+        .social-icons a { color: var(--secondary-yellow); font-size: 1.2rem; margin-right: 15px; text-decoration: none; transition: 0.3s; }
 
         /* STATE CHANGES */
         body.loaded #intro-layer { transform: translateY(-100%); }
-        body.loaded nav, body.loaded #gallery-mount, body.loaded .services-ticker, body.loaded footer { opacity: 1; }
+        body.loaded nav, body.loaded #hero-video-section, body.loaded #gallery-mount, body.loaded .services-ticker, body.loaded footer { opacity: 1; transform: translateY(0); }
+
+        /* =========================================
+           --- MOBILE SPECIFIC ADJUSTMENTS --- 
+           ========================================= */
+        @media (max-width: 768px) {
+            #hero-video-section { height: 40vh; margin-top: 70px; }
+            .hero-center-logo { width: 100px; }
+            #gallery-mount { height: 45vh; align-items: flex-start; margin-top: 20px; }
+            .folder-card { flex: 0 0 240px; height: 35vh; }
+            .nav-links a { font-size: 0.7rem; margin-left: 0; }
+            footer { justify-content: center; gap: 10px; flex-direction: column; }
+        }
+        /* PC/Desktop adjustments */
+        @media (min-width: 1024px) {
+            .folder-card { flex: 0 0 350px; height: 40vh; }
+        }
     </style>
 </head>
 <body>
@@ -164,12 +182,19 @@
     </div>
 
     <nav>
-        <a href="#" class="logo">AK Picture</a>
+        <a href="#" class="logo">AK</a>
         <div class="nav-links">
             <a href="https://wa.me/916374506309?text=Hello%20AK%20Picture!%20I%20would%20like%20to%20discuss%20a%20project." target="_blank">Lets Talk</a>
-            <a onclick="closePanels()">My Gallery</a>
+            <a onclick="closePanels()">Gallery</a>
         </div>
     </nav>
+
+    <section id="hero-video-section">
+        <video autoplay muted loop playsinline>
+            <source src="background.mp4" type="video/mp4">
+        </video>
+        <img src="logo.svg" alt="AK Picture Logo" class="hero-center-logo" onerror="this.src='https://via.placeholder.com/150?text=SVG+LOGO'">
+    </section>
 
     <main id="gallery-mount">
         <div class="scroll-container" id="mainTrack"></div>
@@ -184,8 +209,8 @@
 
     <div id="subGallery" class="panel">
         <span class="close-btn" onclick="closePanels()">&times;</span>
-        <h2 id="subHeader" style="color: var(--secondary-yellow); margin-bottom: 20px; font-size: 2.5rem; text-transform: uppercase;">CATEGORY</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;" id="verticalGrid"></div>
+        <h2 id="subHeader" style="color: var(--secondary-yellow); margin-bottom: 20px; font-size: clamp(2rem, 5vw, 3rem); text-transform: uppercase;">CATEGORY</h2>
+        <div class="responsive-grid" id="verticalGrid"></div>
     </div>
 
     <div id="enquiry-box" class="enquiry-dialog">
@@ -243,7 +268,7 @@
             track.appendChild(card);
         });
 
-        // 3. OPEN VERTICAL SUB GALLERY
+        // 3. OPEN VERTICAL SUB GALLERY (Responsive Grid)
         function openSubGallery(name) {
             document.getElementById('subHeader').innerText = name;
             const grid = document.getElementById('verticalGrid');
@@ -251,7 +276,7 @@
             for(let i=1; i<=6; i++) {
                 grid.innerHTML += `
                     <div style="background:#111; border:1px solid #222; border-radius:10px; padding:20px; text-align:center">
-                        <img src="https://picsum.photos/seed/${name}${i}/400/500" style="width:100%; border-radius:5px; margin-bottom:15px; object-fit: cover;">
+                        <img src="https://picsum.photos/seed/${name}${i}/400/500" style="width:100%; border-radius:5px; margin-bottom:15px; object-fit: cover; aspect-ratio: 4/5;">
                         <p style="font-size:0.8rem; margin-bottom:15px; color:#888; text-transform: uppercase;">${name} Style ${i}</p>
                         <button onclick="openEnquiry('${name}', ${priceList[name]})" style="background:var(--secondary-yellow); color:#000; border:none; padding:12px; font-weight:bold; cursor:pointer; width:100%; border-radius:5px">ENQUIRY</button>
                     </div>`;
@@ -259,7 +284,7 @@
             document.getElementById('subGallery').classList.add('active');
         }
 
-        // 4. ENQUIRY CALCULATION LOGIC
+        // 4. ENQUIRY LOGIC
         function openEnquiry(name, basePrice) {
             document.getElementById('item-display').innerText = name;
             document.getElementById('price').value = basePrice;
@@ -287,8 +312,14 @@
         function closeEnquiry() { document.getElementById('enquiry-box').style.display = 'none'; }
         function closePanels() { document.getElementById('subGallery').classList.remove('active'); }
 
-        // Main gallery horizontal scrolling
-        track.addEventListener('wheel', (e) => { e.preventDefault(); track.scrollLeft += e.deltaY; });
+        // Horizontal scrolling for PC users
+        track.addEventListener('wheel', (e) => { 
+            // Only prevent default if scrolling horizontally to avoid breaking vertical scroll on mobile
+            if (e.deltaY !== 0) {
+                e.preventDefault(); 
+                track.scrollLeft += e.deltaY; 
+            }
+        });
     </script>
 </body>
 </html>
