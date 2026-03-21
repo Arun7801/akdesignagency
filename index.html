@@ -206,24 +206,66 @@
     </footer>
 
     <script>
-        const categories = ["Album Design", "Invitation Card", "Cinematic Videos", "Poster Design", "Photo Frames", "Mockup Design", "Packaging", "Calender"];
-
+         const categories = [
+    {
+        name: "Album Design",
+        cover: "Album (1).jpg",
+        images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg"]
+     },
+    {
+	name: "Branding",
+        cover: "logo (1).jpg", 
+        images: ["logo (1).jpg", "logo (2).jpg", "logo (3).jpg","logo (4).jpg", "logo (5).jpg", "logo (6).jpg"]
+    },
+    {
+        name: "Invitation Card",
+        cover: "images/poster-cover.jpg",
+        images: ["images/p1.jpg", "images/p2.jpg"]
+    },
+    {
+        name: "Packging Design",
+        cover: "images/album-cover.jpg", 
+        images: ["images/album1.jpg", "images/album2.jpg", "images/album3.jpg"]
+    },
+    {
+        name: "Calender",
+        cover: "images/poster-cover.jpg",
+        images: ["images/p1.jpg", "images/p2.jpg"]
+    },
+    {
+        name: "Posters",
+        cover: "images/invite-cover.jpg",
+        images: ["images/inv1.jpg", "images/inv2.jpg"]
+    },
+    {
+        name: "Promotion Poster",
+        cover: "images/poster-cover.jpg",
+        images: ["images/p1.jpg", "images/p2.jpg"]
+    },
+    {
+        name: "Photoframe",
+        cover: "images/poster-cover.jpg",
+        images: ["images/p1.jpg", "images/p2.jpg"]
+    },
+    {
+        name: "Mouckup Design",
+        cover: "images/poster-cover.jpg",
+        images: ["images/p1.jpg", "images/p2.jpg"]
+    }
+];
         // Intro Timer
-        setTimeout(() => { document.body.classList.add('loaded'); }, 10000);
+        setTimeout(() => { document.body.classList.add('loaded'); }, 1000);
 
         // Build Gallery
         const track = document.getElementById('mainTrack');
-        categories.forEach(cat => {
+        categories.forEach((cat,index) => {
             const card = document.createElement('div');
             card.className = 'folder-card';
-            card.innerHTML = `<img src="https://picsum.photos/seed/${cat}/800/500"><h3>${cat}</h3>`;
-            
+            card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
+ 	    card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
+            track.appendChild(card);           
             // Allow clicking to open sub-menu (but prevent triggering if user is just dragging)
-            card.addEventListener('click', (e) => {
-                if(!isDragging) openSub(cat);
-            });
-            track.appendChild(card);
-        });
+           });
 
         // --- CUSTOM DRAG-TO-SCROLL LOGIC ---
         let isDown = false;
