@@ -310,19 +310,21 @@
             } 
         });
 
+     
         // --- SUB MENU LOGIC ---
-        function openSub(name) {
-            document.getElementById('subHeader').innerText = name;
+        function openSub(index) {
+	    const cat = categories[index];
+            document.getElementById('subHeader').innerText =cat.name;
             const grid = document.getElementById('verticalGrid');
             grid.innerHTML = '';
-            for(let i=1; i<=8; i++) {
-                grid.innerHTML += `
-                    <div class="sub-card">
-                        <img src="https://picsum.photos/seed/${name}${i}/500/500">
-                        <p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${name.toUpperCase()} STYLE 0${i}</p>
-                        <button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${name}', '_blank')">ENQUIRY</button>
-                    </div>`;
-            }
+            cat.images.forEach((imgSrc, i) => {
+        grid.innerHTML += `
+            <div class="sub-card">
+                <img src="${imgSrc}">
+                <p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${cat.name.toUpperCase()} 0${i+1}</p>
+                <button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button>
+            </div>`;
+            });
             document.getElementById('subGallery').classList.add('active');
             document.body.style.overflowY = 'hidden'; 
         }
