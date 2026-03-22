@@ -128,7 +128,9 @@
         .sub-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
         .sub-card button { background: var(--secondary-yellow); color: #000; border: none; width: 100%; padding: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
         .sub-card button:hover { background: #fff; }
-
+		
+		/* --- LIGHTBOX --- */
+        #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
         /* --- FIXED FOOTER --- */
         footer {
             position: fixed; bottom: 0; width: 100%; height: 70px;
@@ -274,7 +276,7 @@
             const card = document.createElement('div');
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
- 	    card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
+ 	   		card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
             track.appendChild(card);           
             // Allow clicking to open sub-menu (but prevent triggering if user is just dragging)
            });
@@ -324,63 +326,49 @@
 
         // --- SUB MENU LOGIC ---
         function closeSub() { 
-    // 1. Hide the album panel
-    document.getElementById('subGallery').classList.remove('active'); 
-    
-    // 2. Enable scrolling on the main page again
-    document.body.style.overflowY = 'auto'; 
-    
-    // 3. Optional: Scroll the user back to the gallery section
-    window.location.hash = "gallery-section";
-}
-        // Mouse Wheel scrolling
-        track.addEventListener('wheel', (e) => { 
-            if (e.deltaY !== 0) { 
-                e.preventDefault(); 
-                track.scrollLeft += e.deltaY; 
-            } 
-        });
-
-        // --- SUB MENU LOGIC ---
-        function openSub(index) {
-    const cat = categories[index];
-    document.getElementById('subHeader').innerText = cat.name;
-    const grid = document.getElementById('verticalGrid');
-    grid.innerHTML = '';
-
-    cat.images.forEach((file, i) => {
-        let mediaHtml = "";
-        // We add onclick to the media here
-        if (file.toLowerCase().endsWith('.mp4')) {
-            mediaHtml = `<video src="${file}" autoplay muted loop playsinline onclick="viewMedia('${file}', 'video')"></video>`;
-        } else {
-            mediaHtml = `<img src="${file}" onclick="viewMedia('${file}', 'img')">`;
+            document.getElementById('subGallery').classList.remove('active'); 
+            document.body.style.overflowY = 'auto'; 
+            
+            // --- CLOSE OFF ALL SOUND ---
+            const gridVideos = document.querySelectorAll('#verticalGrid video');
+            gridVideos.forEach(vid => {
+                vid.pause();
+                vid.muted = true;
+            });
+            
+            // Clear sound from Lightbox too
+            closeFullView();
         }
 
-        grid.innerHTML += `
-            <div class="sub-card" style="cursor:zoom-in;">
-                ${mediaHtml}
-                <p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${cat.name.toUpperCase()} 0${i+1}</p>
-                <button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button>
-            </div>`;
-    });
-    
-    document.getElementById('subGallery').classList.add('active');
-    document.body.style.overflowY = 'hidden'; 
-}
+        function viewMedia(file, type, event) {
+            event.stopPropagation();
+            const view = document.getElementById('fullView');
+            const content = document.getElementById('fullContent');
+            
+            if(type === 'video') {
+                // --- SEE TIME: AUDIO IS ON (MUTED ATTRIBUTE REMOVED) ---
+                content.innerHTML = `<video id="activeFullVid" src="${file}" controls autoplay style="width:100%; max-height:80vh;"></video>`;
+            } else {
+                content.innerHTML = `<img src="${file}" style="width:100%; max-height:80vh; object-fit:contain;">`;
+            }
+            view.style.display = 'flex';
+        }
 
-// NEW FUNCTION TO SHOW FULL SCREEN
-function viewMedia(file, type) {
-    const view = document.getElementById('fullView');
-    const content = document.getElementById('fullContent');
-    
-    if(type === 'video') {
-        content.innerHTML = `<video src="${file}" controls autoplay style="width:100%; max-height:80vh;"></video>`;
-    } else {
-        content.innerHTML = `<img src="${file}" style="width:100%; max-height:80vh; object-fit:contain;">`;
-    }
-    view.style.display = 'flex';
-}
+        function closeFullView() {
+            const view = document.getElementById('fullView');
+            const content = document.getElementById('fullContent');
+            
+            // Immediately stop any video playing in full view
+            const fullVid = document.getElementById('activeFullVid');
+            if (fullVid) {
+                fullVid.pause();
+                fullVid.src = "";
+                fullVid.load();
+            }
+            
+            content.innerHTML = "";
+            view.style.display = 'none';
+        }
     </script>
 </body>
 </html>
