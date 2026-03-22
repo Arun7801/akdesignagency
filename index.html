@@ -29,7 +29,20 @@
             overflow-x: hidden; overflow-y: auto; 
         }
         body::-webkit-scrollbar { display: none; }
-
+		
+		/* --- 5S CINEMATIC INTRO --- */
+        #intro-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-black); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1s, visibility 1s;
+        }
+        .intro-logo { 
+            /* Change 'logo.png' to your actual logo filename */
+            width: 250px; 
+            height: auto;
+            animation: cinematicReveal 2s forwards, glowPulse 4s infinite alternate;
+        }
         /* --- VIDEO BACKGROUND --- */
         #video-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #video-bg-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
@@ -113,7 +126,10 @@
     </style>
 </head>
 <body id="body-main">
-
+	<div id="intro-layer">
+        <img src="Logo (1).jpg" class="intro-logo" alt="AK Picture">
+        <div class="intro-tagline" style="color: var(--secondary-yellow);">Design Agency</div>
+    </div>
     <div id="video-bg-container">
         <video id="bgVideo" autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
     </div>
@@ -180,6 +196,9 @@
     </footer>
 
     <script>
+		// 5 Second Intro Timer
+        setTimeout(() => { document.body.classList.add('loaded'); }, 5000);
+		
         const categories = [
             { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg", "Album (3).jpg", "akbg.mp4"] },
             { name: "Cinematic Videos", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg"] },
