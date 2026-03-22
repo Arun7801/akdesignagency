@@ -110,8 +110,17 @@
         #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
 
         /* --- FOOTER --- */
-        footer { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--secondary-yellow); display: flex; align-items: center; justify-content: space-between; padding: 0 6%; z-index: 100; opacity: 0; transition: 1s; }
+        footer {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: var(--secondary-yellow); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 6%; z-index: 100; opacity: 0; transition: 1s;
+        }
+        .footer-ticker { flex: 1; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); }
         .ticker-content { display: inline-block; animation: ticker 40s linear infinite; color: #000; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; }
+        
+        .footer-fixed { display: flex; align-items: center; background: var(--secondary-yellow); padding-left: 20px; z-index: 2; }
+        .footer-fixed a { color: #000; font-size: 1.3rem; margin-left: 15px; text-decoration: none; }
+        .phone-num { font-weight: 900; margin-left: 15px; color: #000; font-size: 0.9rem; letter-spacing: 1px;}
         
         @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes cinematicReveal { 0% { opacity: 0; filter: blur(20px); } 100% { opacity: 1; filter: blur(0); } }
