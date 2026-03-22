@@ -83,7 +83,15 @@
             justify-content: center; padding: 100px 0 150px; opacity: 0; transition: 1.5s 0.8s;
         }
         .gallery-title { text-align: center; color: var(--primary-white); font-weight: 300; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; font-size: 1.5rem; }
-        
+        /* --- THIS IS THE CHANGE LINE --- */
+	.sub-card img, .sub-card video { 
+   		width: 100%; 
+   		aspect-ratio: 1/1; 
+	    object-fit: cover; 
+   		border-radius: 10px; 
+  	    margin-bottom: 20px; 
+ 	   background: #000; 
+	}
         /* --- INTERACTIVE DRAG SCROLL --- */
         .scroll-container { 
             display: flex; gap: 30px; padding: 0 8%; overflow-x: auto; 
