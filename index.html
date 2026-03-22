@@ -200,7 +200,12 @@
         track.addEventListener('mouseleave', () => isDown = false);
         track.addEventListener('mouseup', () => { isDown = false; setTimeout(() => { isDragging = false; }, 50); });
         track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); isDragging = true; const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
-
+        Mouse Wheel scrolling
+        track.addEventListener('wheel', (e) => { 
+            if (e.deltaY !== 0) { 
+                e.preventDefault(); 
+                track.scrollLeft += e.deltaY; 
+            } 
         function openSub(index) {
             // Background is OFF
             const bgVideo = document.getElementById('bgVideo');
