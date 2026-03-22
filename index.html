@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CUSTOM FONT --- */
         @font-face {
             font-family: 'Negan DEMO';
             src: url('Negan-DEMO-Regular.otf') format('opentype');
@@ -38,7 +37,7 @@
             background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.8) 100%);
         }
 
-        /* --- 10S CINEMATIC INTRO --- */
+        /* --- INTRO --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-black); z-index: 9999;
@@ -62,112 +61,71 @@
         .logo { font-size: 2rem; font-family: 'Negan DEMO', sans-serif; color: var(--secondary-yellow); text-decoration: none; }
         .nav-links a { color: var(--primary-white); text-decoration: none; margin-left: 25px; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; }
 
-        /* --- SECTION 1: HERO LANDING PAGE --- */
+        /* --- SECTIONS --- */
         #hero-section {
             height: 100vh; width: 100%; display: flex; flex-direction: column;
             align-items: center; justify-content: center; position: relative;
             opacity: 0; transition: 1.5s 0.5s;
         }
-        .hero-logo { font-family: 'Negan DEMO'; font-size: clamp(4rem, 18vw, 10rem); color: var(--secondary-yellow); line-height: 0.8; text-shadow: 0 0 20px rgba(255,215,0,0.3); }
-        .hero-tag { letter-spacing: 15px; text-transform: uppercase; font-size: clamp(0.8rem, 2vw, 1.2rem); margin: 20px 0 40px; opacity: 0.8; }
-        
-        .scroll-down-icon {
-            position: absolute; bottom: 120px; color: var(--secondary-yellow); font-size: 2rem;
-            animation: bounce 2s infinite; text-decoration: none; opacity: 0.7; transition: 0.3s;
-        }
-        .scroll-down-icon:hover { opacity: 1; }
+        .hero-logo { font-family: 'Negan DEMO'; font-size: clamp(4rem, 18vw, 10rem); color: var(--secondary-yellow); line-height: 0.8; }
+        .scroll-down-icon { position: absolute; bottom: 120px; color: var(--secondary-yellow); font-size: 2rem; animation: bounce 2s infinite; text-decoration: none; }
 
-        /* --- SECTION 2: GALLERY --- */
-        #gallery-section {
-            min-height: 100vh; width: 100%; display: flex; flex-direction: column;
-            justify-content: center; padding: 100px 0 150px; opacity: 0; transition: 1.5s 0.8s;
-        }
-        .gallery-title { text-align: center; color: var(--primary-white); font-weight: 300; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; font-size: 1.5rem; }
-        /* --- THIS IS THE CHANGE LINE --- */
-	.sub-card img, .sub-card video { 
-   		width: 100%; 
-   		aspect-ratio: 1/1; 
-	    object-fit: cover; 
-   		border-radius: 10px; 
-  	    margin-bottom: 20px; 
- 	   background: #000; 
-	}
-        /* --- INTERACTIVE DRAG SCROLL --- */
-        .scroll-container { 
-            display: flex; gap: 30px; padding: 0 8%; overflow-x: auto; 
-            scrollbar-width: none; 
-            cursor: grab; /* Shows hand icon */
-            -webkit-overflow-scrolling: touch; /* Smooth mobile swipe */
-        }
-        .scroll-container:active { cursor: grabbing; } /* Closed hand when dragging */
+        #gallery-section { min-height: 100vh; width: 100%; padding: 100px 0 150px; opacity: 0; transition: 1.5s 0.8s; }
+        .gallery-title { text-align: center; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
+
+        /* --- GALLERY DRAG --- */
+        .scroll-container { display: flex; gap: 30px; padding: 0 8%; overflow-x: auto; scrollbar-width: none; cursor: grab; }
+        .scroll-container:active { cursor: grabbing; }
         .scroll-container::-webkit-scrollbar { display: none; }
-        
+
         .folder-card { 
             flex: 0 0 clamp(280px, 35vw, 420px); height: clamp(200px, 30vh, 280px); 
             background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px); border-radius: 20px; position: relative; 
-            overflow: hidden; transition: var(--transition); user-select: none;
+            backdrop-filter: blur(10px); border-radius: 20px; position: relative; overflow: hidden;
         }
-        /* Disable image drag to prevent browser conflicts */
-        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; pointer-events: none; }
-        .folder-card:hover { border-color: var(--secondary-yellow); transform: translateY(-10px); }
-        .folder-card:hover img { opacity: 0.8; }
-        .folder-card h3 { position: absolute; bottom: 20px; left: 20px; color: var(--secondary-yellow); text-transform: uppercase; font-size: 1.2rem; pointer-events: none; }
+        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+        .folder-card h3 { position: absolute; bottom: 20px; left: 20px; color: var(--secondary-yellow); text-transform: uppercase; }
 
-        /* --- SUB-MENU PANEL --- */
+        /* --- SUB MENU PANEL --- */
         .panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 5000; visibility: hidden; opacity: 0; transform: scale(1.05);
+            background: rgba(0,0,0,0.98); z-index: 5000; visibility: hidden; opacity: 0; 
             transition: 0.5s ease-in-out; padding: 100px 8% 80px; overflow-y: auto;
         }
-        .panel.active { visibility: visible; opacity: 1; transform: scale(1); }
-        .close-btn { position: fixed; top: 30px; right: 6%; font-size: 3rem; color: var(--secondary-yellow); cursor: pointer; z-index: 5100; }
-        
-        .sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
-        .sub-card { background: #111; border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #222; }
-        .sub-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
-        .sub-card button { background: var(--secondary-yellow); color: #000; border: none; width: 100%; padding: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .sub-card button:hover { background: #fff; }
-		
-		/* --- LIGHTBOX --- */
-        #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
-        /* --- FIXED FOOTER --- */
-        footer {
-            position: fixed; bottom: 0; width: 100%; height: 70px;
-            background: var(--secondary-yellow); display: flex; align-items: center;
-            justify-content: space-between; padding: 0 6%; z-index: 100; opacity: 0; transition: 1s;
+        .panel.active { visibility: visible; opacity: 1; }
+
+        .close-btn { 
+            position: fixed; top: 20px; right: 20px; font-size: 3rem; 
+            color: var(--secondary-yellow); cursor: pointer; z-index: 6000 !important; 
+            background: rgba(0,0,0,0.5); width: 60px; height: 60px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
         }
-        .footer-ticker { flex: 1; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); }
+
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .sub-card { background: #111; border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #222; }
+        .sub-card img, .sub-card video { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 20px; cursor: zoom-in; }
+        .sub-card button { background: var(--secondary-yellow); color: #000; border: none; width: 100%; padding: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; }
+
+        /* --- LIGHTBOX --- */
+        #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
+
+        /* --- FOOTER --- */
+        footer { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--secondary-yellow); display: flex; align-items: center; justify-content: space-between; padding: 0 6%; z-index: 100; opacity: 0; transition: 1s; }
         .ticker-content { display: inline-block; animation: ticker 40s linear infinite; color: #000; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; }
         
-        .footer-fixed { display: flex; align-items: center; background: var(--secondary-yellow); padding-left: 20px; z-index: 2; }
-        .footer-fixed a { color: #000; font-size: 1.3rem; margin-left: 15px; text-decoration: none; }
-        .phone-num { font-weight: 900; margin-left: 15px; color: #000; font-size: 0.9rem; letter-spacing: 1px;}
-
-        /* KEYFRAMES */
-        @keyframes cinematicReveal { 0% { opacity: 0; filter: blur(20px); transform: scale(0.9); } 100% { opacity: 1; filter: blur(0px); transform: scale(1); } }
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes glowPulse { from { text-shadow: 0 0 5px rgba(255,215,0,0); } to { text-shadow: 0 0 20px rgba(255,215,0,0.6); } }
         @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
+        @keyframes cinematicReveal { 0% { opacity: 0; filter: blur(20px); } 100% { opacity: 1; filter: blur(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } }
 
-        /* LOADED STATE */
-        body.loaded #intro-layer { opacity: 0; visibility: hidden; pointer-events: none; }
+        body.loaded #intro-layer { opacity: 0; visibility: hidden; }
         body.loaded nav, body.loaded #hero-section, body.loaded #gallery-section, body.loaded footer { opacity: 1; }
-
-        @media (max-width: 600px) {
-            nav { padding: 20px 6%; }
-            .nav-links a { margin-left: 15px; font-size: 0.7rem; }
-            footer { height: auto; flex-direction: column; padding: 10px; }
-            .footer-fixed { padding-left: 0; padding-top: 5px; }
-            .scroll-down-icon { bottom: 150px; }
-        }
     </style>
 </head>
 <body id="body-main">
 
     <div id="video-bg-container">
-        <video autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
+        <video id="bgVideo" autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
     </div>
 
     <div id="intro-layer">
@@ -196,12 +154,13 @@
 
     <div id="subGallery" class="panel">
         <span class="close-btn" onclick="closeSub()">&times;</span>
-        <h2 id="subHeader" style="color: var(--secondary-yellow); text-transform: uppercase; letter-spacing: 4px; text-align:center; font-size: clamp(2rem, 5vw, 3rem);">Category</h2>
+        <h2 id="subHeader" style="color: var(--secondary-yellow); text-transform: uppercase; text-align:center; font-size: 2rem; margin-bottom: 30px;">Category</h2>
         <div class="sub-grid" id="verticalGrid"></div>
-		<div id="fullView" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; display:none; align-items:center; justify-content:center; cursor:pointer;" onclick="this.style.display='none'">
-    <span style="position:absolute; top:20px; right:30px; color:white; font-size:40px;">&times;</span>
-    <div id="fullContent" style="max-width:90%; max-height:80%;"></div>
-</div>
+    </div>
+
+    <div id="fullView" onclick="closeFullView()">
+        <span style="position:absolute; top:20px; right:30px; color:white; font-size:40px;">&times;</span>
+        <div id="fullContent" style="max-width:90%; max-height:80%;"></div>
     </div>
 
     <footer>
@@ -211,120 +170,67 @@
                 <span>Branding • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • Packaging • </span>
             </div>
         </div>
-        <div class="footer-fixed">
-            <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <div class="phone-num">6374506309</div>
+        <div class="footer-fixed" style="display:flex; align-items:center;">
+            <a href="https://wa.me/916374506309" target="_blank" style="color:#000; margin-right:15px;"><i class="fab fa-whatsapp"></i></a>
+            <div class="phone-num" style="color:#000; font-weight:700;">6374506309</div>
         </div>
     </footer>
 
-     <script>
+    <script>
         const categories = [
-    {
-        name: "Album Design",
-        cover: "Album (1).jpg",
-        images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg","akbg.mp4"]
-     },
-    {
-	name: "Branding",
-        cover: "Logo (1).jpg", 
-        images: ["Logo (1).jpg", "Logo (2).jpg", "Logo (3).jpg","Logo (4).jpg", "Logo (5).jpg", "Logo (6).jpg"]
-    },
-    {
-        name: "Invitation Card",
-        cover: "images/poster-cover.jpg",
-        images: ["images/p1.jpg", "images/p2.jpg"]
-    },
-    {
-        name: "Packging Design",
-        cover: "Packging (14).jpg", 
-        images: ["Packging (14).jpg", "Packging (15).jpg", "Packging (16).jpg", "mockup viboothi copy.jpg"]
-    },
-    {
-        name: "Calender",
-        cover: "images/poster-cover.jpg",
-        images: ["images/p1.jpg", "images/p2.jpg"]
-    },
-    {
-        name: "Posters",
-        cover: "images/invite-cover.jpg",
-        images: ["images/inv1.jpg", "images/inv2.jpg"]
-    },
-    {
-        name: "Promotion Poster",
-        cover: "images/poster-cover.jpg",
-        images: ["images/p1.jpg", "images/p2.jpg"]
-    },
-    {
-        name: "Photoframe",
-        cover: "images/poster-cover.jpg",
-        images: ["images/p1.jpg", "images/p2.jpg"]
-    },
-    {
-        name: "Mouckup Design",
-        cover: "images/poster-cover.jpg",
-        images: ["images/p1.jpg", "images/p2.jpg"]
-    }
-];
-        // Intro Timer
+            { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg","akbg.mp4"] },
+            { name: "Branding", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg", "logo (3).jpg"] },
+            { name: "Invitation Card", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
+            { name: "Packging Design", cover: "images/album-cover.jpg", images: ["images/album1.jpg", "images/album2.jpg"] }
+        ];
+
         setTimeout(() => { document.body.classList.add('loaded'); }, 1000);
 
-        // Build Gallery
         const track = document.getElementById('mainTrack');
         categories.forEach((cat,index) => {
             const card = document.createElement('div');
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
- 	   		card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
+            card.addEventListener('click', () => { if(!isDragging) openSub(index); });
             track.appendChild(card);           
-            // Allow clicking to open sub-menu (but prevent triggering if user is just dragging)
-           });
-
-        // --- CUSTOM DRAG-TO-SCROLL LOGIC ---
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-        let isDragging = false; // Distinguish between a click and a drag
-
-        track.addEventListener('mousedown', (e) => {
-            isDown = true;
-            isDragging = false;
-            track.classList.add('active');
-            startX = e.pageX - track.offsetLeft;
-            scrollLeft = track.scrollLeft;
         });
 
-        track.addEventListener('mouseleave', () => {
-            isDown = false;
-            track.classList.remove('active');
-        });
+        let isDown = false, startX, scrollLeft, isDragging = false;
+        track.addEventListener('mousedown', (e) => { isDown = true; isDragging = false; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+        track.addEventListener('mouseleave', () => isDown = false);
+        track.addEventListener('mouseup', () => { isDown = false; setTimeout(() => { isDragging = false; }, 50); });
+        track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); isDragging = true; const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-        track.addEventListener('mouseup', () => {
-            isDown = false;
-            track.classList.remove('active');
-            // Small delay to allow click events to evaluate isDragging
-            setTimeout(() => { isDragging = false; }, 50); 
-        });
+        function openSub(index) {
+            // Background is OFF
+            const bgVideo = document.getElementById('bgVideo');
+            if (bgVideo) bgVideo.muted = true;
 
-        track.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            isDragging = true; // User is moving the mouse, so it's a drag
-            const x = e.pageX - track.offsetLeft;
-            const walk = (x - startX) * 2; // Scroll speed multiplier
-            track.scrollLeft = scrollLeft - walk;
-        });
+            const cat = categories[index];
+            document.getElementById('subHeader').innerText = cat.name;
+            const grid = document.getElementById('verticalGrid');
+            grid.innerHTML = '';
 
-        // Mouse Wheel scrolling
-        track.addEventListener('wheel', (e) => { 
-            if (e.deltaY !== 0) { 
-                e.preventDefault(); 
-                track.scrollLeft += e.deltaY; 
-            } 
-        });
+            cat.images.forEach((file, i) => {
+                let mediaHtml = "";
+                if (file.toLowerCase().endsWith('.mp4')) {
+                    // Grid Videos: OFF (MUTED)
+                    mediaHtml = `<video src="${file}" autoplay muted loop playsinline onclick="viewMedia('${file}', 'video', event)"></video>`;
+                } else {
+                    mediaHtml = `<img src="${file}" onclick="viewMedia('${file}', 'img', event)">`;
+                }
 
-        // --- SUB MENU LOGIC ---
+                grid.innerHTML += `
+                    <div class="sub-card">
+                        ${mediaHtml}
+                        <p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${cat.name.toUpperCase()} 0${i+1}</p>
+                        <button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button>
+                    </div>`;
+            });
+            document.getElementById('subGallery').classList.add('active');
+            document.body.style.overflowY = 'hidden'; 
+        }
+
         function closeSub() { 
             document.getElementById('subGallery').classList.remove('active'); 
             document.body.style.overflowY = 'auto'; 
