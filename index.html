@@ -83,8 +83,23 @@
             background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(10px); border-radius: 20px; position: relative; overflow: hidden;
         }
-        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; pointer-events: none;}
         .folder-card h3 { position: absolute; bottom: 20px; left: 20px; color: var(--secondary-yellow); text-transform: uppercase; }
+
+        /* --- BOOKING SECTION --- */
+        #booking-section { padding: 100px 6% 150px; background: #000; text-align: center; opacity: 0; transition: 1.5s;}
+        #booking-section h2 { color: #fff; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 40px; font-size: 1.8rem; }
+        .booking-form { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
+        .booking-form input, .booking-form select, .booking-form textarea {
+            padding: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; border-radius: 5px; font-family: 'Inter', sans-serif;
+        }
+        .booking-form button {
+            padding: 15px; background: none; border: 1px solid #00ffff; color: #00ffff; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; margin-top: 10px;
+        }
+        .booking-form button:hover { background: #00ffff; color: #000; }
+        .contact-info { margin-top: 60px; color: #fff; }
+        .contact-info p { margin-bottom: 12px; font-size: 0.95rem; color: #ccc; }
+        .contact-info i { margin-right: 10px; color: var(--secondary-yellow); }
 
         /* --- SUB MENU PANEL --- */
         .panel {
@@ -108,17 +123,25 @@
 
         /* --- LIGHTBOX --- */
         #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
-/* --- FOOTER --- */
-        footer { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--secondary-yellow); display: flex; align-items: center; justify-content: space-between; padding: 0 6%; z-index: 100; opacity: 0; transition: 1s; }
-        .ticker-content { display: inline-block; animation: ticker 40s linear infinite; color: #000; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; }
-        
-        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* --- FOOTER FIXED --- */
+        footer {
+            position: fixed; bottom: 0; width: 100%; height: 60px;
+            background: var(--secondary-yellow); display: flex; align-items: center;
+            justify-content: center; z-index: 1000; opacity: 0; transition: 1s;
+        }
+        .footer-fixed { display: flex; align-items: center; gap: 40px; }
+        .social-icons { display: flex; gap: 20px; }
+        .social-icons a { color: #000; font-size: 1.4rem; transition: 0.3s; }
+        .social-icons a:hover { transform: translateY(-3px); }
+        .phone-num { font-weight: 900; color: #000; font-size: 1.1rem; letter-spacing: 1px; }
+
         @keyframes cinematicReveal { 0% { opacity: 0; filter: blur(20px); } 100% { opacity: 1; filter: blur(0); } }
         @keyframes fadeIn { to { opacity: 1; } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } }
 
         body.loaded #intro-layer { opacity: 0; visibility: hidden; }
-        body.loaded nav, body.loaded #hero-section, body.loaded #gallery-section, body.loaded footer { opacity: 1; }
+        body.loaded nav, body.loaded #hero-section, body.loaded #gallery-section, body.loaded #booking-section, body.loaded footer { opacity: 1; }
     </style>
 </head>
 <body id="body-main">
@@ -135,7 +158,7 @@
     <nav>
         <a href="#" class="logo">AK</a>
         <div class="nav-links">
-            <a href="https://wa.me/916374506309" target="_blank">Contact</a>
+            <a href="#booking-section">Contact</a>
             <a href="#gallery-section">Gallery</a>
         </div>
     </nav>
@@ -151,6 +174,30 @@
         <div class="scroll-container" id="mainTrack"></div>
     </section>
 
+    <section id="booking-section">
+        <h2>Book Our Services</h2>
+        <form class="booking-form" id="whatsappForm">
+            <input type="text" id="custName" placeholder="Your Name" required>
+            <input type="text" id="custPhone" placeholder="Phone Number" required>
+            <select id="custService" required>
+                <option value="" disabled selected>Select a Service</option>
+                <option value="Album Design">Album Design</option>
+                <option value="Branding">Branding</option>
+                <option value="Invitation Card">Invitation Card</option>
+                <option value="Packaging Design">Packaging Design</option>
+                <option value="Cinematic Video">Cinematic Video</option>
+            </select>
+            <textarea id="custProject" placeholder="Tell us about your project..." rows="5"></textarea>
+            <button type="button" onclick="sendToWhatsApp()">Send Enquiry</button>
+        </form>
+
+        <div class="contact-info">
+            <p><i class="fas fa-map-marker-alt"></i> Studio: Tenkasi - Sivakasi</p>
+            <p><i class="fas fa-phone-alt"></i> Phone: 6374506309</p>
+            <p><i class="fas fa-envelope"></i> Email: arunarun7801@gmail.com</p>
+        </div>
+    </section>
+
     <div id="subGallery" class="panel">
         <span class="close-btn" onclick="closeSub()">&times;</span>
         <h2 id="subHeader" style="color: var(--secondary-yellow); text-transform: uppercase; text-align:center; font-size: 2rem; margin-bottom: 30px;">Category</h2>
@@ -163,57 +210,65 @@
     </div>
 
     <footer>
-        <div class="footer-ticker">
-            <div class="ticker-content">
-                <span>Branding • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • Packaging • </span>
-                <span>Branding • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • Packaging • </span>
+        <div class="footer-fixed">
+            <div class="social-icons">
+                <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
             </div>
-        </div>
-        <div class="footer-fixed" style="display:flex; align-items:center;">
-            <a href="https://wa.me/916374506309" target="_blank" style="color:#000; margin-right:15px;"><i class="fab fa-whatsapp"></i></a>
-            <div class="phone-num" style="color:#000; font-weight:700;">6374506309</div>
+            <div class="phone-num">6374506309</div>
         </div>
     </footer>
-    
+
     <script>
         const categories = [
             { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg","akbg.mp4"] },
-            { name: "Packging Design", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg", "logo (3).jpg"] },
+            { name: "Branding", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg", "logo (3).jpg"] },
             { name: "Invitation Card", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
-            { name: "Cinematic Video", cover: "images/album-cover.jpg", images: ["images/album1.jpg", "images/album2.jpg"] },
-            { name: "Calender", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg","akbg.mp4"] },
-            { name: "Illustration", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg", "logo (3).jpg"] },
-            { name: "Website Design", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
             { name: "Packging Design", cover: "images/album-cover.jpg", images: ["images/album1.jpg", "images/album2.jpg"] }
         ];
 
         setTimeout(() => { document.body.classList.add('loaded'); }, 1000);
 
         const track = document.getElementById('mainTrack');
+        
+        // BUILD CARDS
         categories.forEach((cat,index) => {
             const card = document.createElement('div');
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
-            card.addEventListener('click', () => { if(!isDragging) openSub(index); });
+            card.addEventListener('click', () => { 
+                if(!isDragging) openSub(index); 
+            });
             track.appendChild(card);           
         });
 
+        // DRAG & MOBILE TAP LOGIC
         let isDown = false, startX, scrollLeft, isDragging = false;
+
         track.addEventListener('mousedown', (e) => { isDown = true; isDragging = false; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
         track.addEventListener('mouseleave', () => isDown = false);
-        track.addEventListener('mouseup', () => { isDown = false; setTimeout(() => { isDragging = false; }, 50); });
-        track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); isDragging = true; const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
-        Mouse Wheel scrolling
-        track.addEventListener('wheel', (e) => { 
-            if (e.deltaY !== 0) { 
-                e.preventDefault(); 
-                track.scrollLeft += e.deltaY; 
-            } 
-        function openSub(index) {
-            // Background is OFF
-            const bgVideo = document.getElementById('bgVideo');
-            if (bgVideo) bgVideo.muted = true;
+        track.addEventListener('mouseup', () => { isDown = false; });
+        track.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - track.offsetLeft;
+            const walk = (x - startX) * 2;
+            if(Math.abs(walk) > 5) isDragging = true;
+            track.scrollLeft = scrollLeft - walk;
+        });
 
+        // MOBILE TOUCH
+        track.addEventListener('touchstart', (e) => { isDragging = false; startX = e.touches[0].pageX - track.offsetLeft; scrollLeft = track.scrollLeft; }, {passive: true});
+        track.addEventListener('touchmove', (e) => {
+            const x = e.touches[0].pageX - track.offsetLeft;
+            const walk = (x - startX);
+            if(Math.abs(walk) > 10) isDragging = true;
+            track.scrollLeft = scrollLeft - walk;
+        }, {passive: true});
+
+        function openSub(index) {
+            document.getElementById('bgVideo').muted = true;
             const cat = categories[index];
             document.getElementById('subHeader').innerText = cat.name;
             const grid = document.getElementById('verticalGrid');
@@ -222,18 +277,11 @@
             cat.images.forEach((file, i) => {
                 let mediaHtml = "";
                 if (file.toLowerCase().endsWith('.mp4')) {
-                    // Grid Videos: OFF (MUTED)
                     mediaHtml = `<video src="${file}" autoplay muted loop playsinline onclick="viewMedia('${file}', 'video', event)"></video>`;
                 } else {
                     mediaHtml = `<img src="${file}" onclick="viewMedia('${file}', 'img', event)">`;
                 }
-
-                grid.innerHTML += `
-                    <div class="sub-card">
-                        ${mediaHtml}
-                        <p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${cat.name.toUpperCase()} 0${i+1}</p>
-                        <button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button>
-                    </div>`;
+                grid.innerHTML += `<div class="sub-card">${mediaHtml}<p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${cat.name.toUpperCase()} 0${i+1}</p><button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button></div>`;
             });
             document.getElementById('subGallery').classList.add('active');
             document.body.style.overflowY = 'hidden'; 
@@ -242,15 +290,8 @@
         function closeSub() { 
             document.getElementById('subGallery').classList.remove('active'); 
             document.body.style.overflowY = 'auto'; 
-            
-            // --- CLOSE OFF ALL SOUND ---
-            const gridVideos = document.querySelectorAll('#verticalGrid video');
-            gridVideos.forEach(vid => {
-                vid.pause();
-                vid.muted = true;
-            });
-            
-            // Clear sound from Lightbox too
+            const vids = document.querySelectorAll('#verticalGrid video');
+            vids.forEach(v => { v.pause(); v.muted = true; });
             closeFullView();
         }
 
@@ -258,9 +299,7 @@
             event.stopPropagation();
             const view = document.getElementById('fullView');
             const content = document.getElementById('fullContent');
-            
             if(type === 'video') {
-                // --- SEE TIME: AUDIO IS ON (MUTED ATTRIBUTE REMOVED) ---
                 content.innerHTML = `<video id="activeFullVid" src="${file}" controls autoplay style="width:100%; max-height:80vh;"></video>`;
             } else {
                 content.innerHTML = `<img src="${file}" style="width:100%; max-height:80vh; object-fit:contain;">`;
@@ -270,18 +309,22 @@
 
         function closeFullView() {
             const view = document.getElementById('fullView');
-            const content = document.getElementById('fullContent');
-            
-            // Immediately stop any video playing in full view
-            const fullVid = document.getElementById('activeFullVid');
-            if (fullVid) {
-                fullVid.pause();
-                fullVid.src = "";
-                fullVid.load();
-            }
-            
-            content.innerHTML = "";
+            const fv = document.getElementById('activeFullVid');
+            if (fv) { fv.pause(); fv.src = ""; }
+            document.getElementById('fullContent').innerHTML = "";
             view.style.display = 'none';
+        }
+
+        function sendToWhatsApp() {
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const service = document.getElementById('custService').value;
+            const project = document.getElementById('custProject').value;
+
+            if (!name || !phone || !service) { alert("Please fill required fields."); return; }
+
+            const msg = `*NEW ENQUIRY - AK PICTURES*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Project:* ${project}`;
+            window.open(`https://wa.me/916374506309?text=${msg}`, '_blank');
         }
     </script>
 </body>
