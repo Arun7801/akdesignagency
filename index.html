@@ -109,7 +109,8 @@
         /* --- LIGHTBOX --- */
         #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
 
-        /* --- FOOTER --- */
+        
+        /* --- FIXED FOOTER --- */
         footer {
             position: fixed; bottom: 0; width: 100%; height: 70px;
             background: var(--secondary-yellow); display: flex; align-items: center;
@@ -179,11 +180,14 @@
                 <span>Branding • Album Design • Invitation Cards • Cinematic Videos • Poster Design • Photo Frames • Mockup Design • Packaging • </span>
             </div>
         </div>
-        <div class="footer-fixed" style="display:flex; align-items:center;">
-            <a href="https://wa.me/916374506309" target="_blank" style="color:#000; margin-right:15px;"><i class="fab fa-whatsapp"></i></a>
-            <div class="phone-num" style="color:#000; font-weight:700;">6374506309</div>
+        <div class="footer-fixed">
+            <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <div class="phone-num">6374506309</div>
         </div>
     </footer>
+    
     <script>
         const categories = [
             { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg","akbg.mp4"] },
