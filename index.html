@@ -257,8 +257,9 @@
             const card = document.createElement('div');
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
-            card.addEventListener('click', () => { if(!isDragging) openSub(index); });
-            track.appendChild(card);           
+            // Fix: Standard click for both mobile/desktop
+            card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
+            track.appendChild(card);            
         });
 
         // DRAG LOGIC
