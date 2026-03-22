@@ -141,7 +141,7 @@
             <a href="https://wa.me/916374506309" target="_blank">Contact</a>
             <a href="#gallery-section">Gallery</a>
         </div>
-
+    </nav>
     <nav>
         <a href="#" class="logo">AK</a>
         <div class="nav-links">
@@ -210,8 +210,8 @@
             { name: "Cinematic Videos", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg"] },
             { name: "Invitation Cards", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
             { name: "Packaging Product Design", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] },
-	    { name: "Posters", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] },
-	    { name: "Illustration", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg", "Album (3).jpg", "akbg.mp4"] },
+	    	{ name: "Posters", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] },
+	    	{ name: "Illustration", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg", "Album (3).jpg", "akbg.mp4"] },
             { name: "Web design", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg"] },
             { name: "Branding", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
             { name: "Calender Design & Print", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] }
@@ -219,7 +219,8 @@
         
         // Intro Timer (Shortened to 3.5 seconds)
         setTimeout(() => { document.body.classList.add('loaded'); }, 3500);
-
+		
+		// Build Main Gallery
         const track = document.getElementById('mainTrack');
         categories.forEach((cat,index) => {
             const card = document.createElement('div');
