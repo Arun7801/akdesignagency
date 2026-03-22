@@ -30,19 +30,19 @@
         }
         body::-webkit-scrollbar { display: none; }
 		
-		/* --- 5S CINEMATIC INTRO --- */
+		/* --- 3S CINEMATIC INTRO (Optimized) --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-black); z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 1s, visibility 1s;
+            transition: opacity 1.5s, visibility 1.5s;
         }
         .intro-logo { 
-            /* Change 'logo.png' to your actual logo filename */
-            width: 250px; 
-            height: auto;
-            animation: cinematicReveal 2s forwards, glowPulse 4s infinite alternate;
+            font-family: 'Negan DEMO', sans-serif; font-size: clamp(3rem, 10vw, 6rem); 
+            color: var(--secondary-yellow); text-align: center;
+            animation: cinematicReveal 3s forwards, glowPulse 4s infinite alternate;
         }
+        .intro-tagline { letter-spacing: 12px; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; opacity: 0; animation: fadeIn 2s forwards 1s; }
         /* --- VIDEO BACKGROUND --- */
         #video-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #video-bg-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
@@ -126,13 +126,21 @@
     </style>
 </head>
 <body id="body-main">
-	<div id="intro-layer">
-        <img src="Logo (1).jpg" class="intro-logo" alt="AK Picture">
-        <div class="intro-tagline" style="color: var(--secondary-yellow);">Design Agency</div>
+	<div id="video-bg-container">
+        <video autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
     </div>
-    <div id="video-bg-container">
-        <video id="bgVideo" autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
+
+    <div id="intro-layer">
+        <div class="intro-logo">AK Picture</div>
+        <div class="intro-tagline">Design Agency</div>
     </div>
+
+    <nav>
+        <a href="#" class="logo">AK</a>
+        <div class="nav-links">
+            <a href="https://wa.me/916374506309" target="_blank">Contact</a>
+            <a href="#gallery-section">Gallery</a>
+        </div>
 
     <nav>
         <a href="#" class="logo">AK</a>
@@ -196,9 +204,7 @@
     </footer>
 
     <script>
-		// 5 Second Intro Timer
-        setTimeout(() => { document.body.classList.add('loaded'); }, 5000);
-		
+
         const categories = [
             { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg", "Album (3).jpg", "akbg.mp4"] },
             { name: "Cinematic Videos", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg"] },
@@ -210,8 +216,9 @@
             { name: "Branding", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
             { name: "Calender Design & Print", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] }
         ];
-
-        setTimeout(() => { document.body.classList.add('loaded'); }, 500);
+        
+        // Intro Timer (Shortened to 3.5 seconds)
+        setTimeout(() => { document.body.classList.add('loaded'); }, 3500);
 
         const track = document.getElementById('mainTrack');
         categories.forEach((cat,index) => {
