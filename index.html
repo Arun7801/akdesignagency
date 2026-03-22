@@ -17,6 +17,7 @@
             --bg-black: #000000;
             --primary-white: #FFFFFF;
             --secondary-yellow: #FFD700; 
+            --accent-cyan: #00ffff;
             --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -32,24 +33,6 @@
         /* --- VIDEO BACKGROUND --- */
         #video-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #video-bg-container video { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
-        #video-bg-container::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.8) 100%);
-        }
-
-        /* --- INTRO --- */
-        #intro-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-black); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 1.5s, visibility 1.5s;
-        }
-        .intro-logo { 
-            font-family: 'Negan DEMO', sans-serif; font-size: clamp(3rem, 10vw, 6rem); 
-            color: var(--secondary-yellow); text-align: center;
-            animation: cinematicReveal 3s forwards, glowPulse 4s infinite alternate;
-        }
-        .intro-tagline { letter-spacing: 12px; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; opacity: 0; animation: fadeIn 2s forwards 2s; }
 
         /* --- NAVIGATION --- */
         nav { 
@@ -61,98 +44,78 @@
         .logo { font-size: 2rem; font-family: 'Negan DEMO', sans-serif; color: var(--secondary-yellow); text-decoration: none; }
         .nav-links a { color: var(--primary-white); text-decoration: none; margin-left: 25px; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; }
 
-        /* --- SECTIONS --- */
+        /* --- HERO --- */
         #hero-section {
             height: 100vh; width: 100%; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; position: relative;
-            opacity: 0; transition: 1.5s 0.5s;
+            align-items: center; justify-content: center; opacity: 0; transition: 1.5s 0.5s;
         }
         .hero-logo { font-family: 'Negan DEMO'; font-size: clamp(4rem, 18vw, 10rem); color: var(--secondary-yellow); line-height: 0.8; }
-        .scroll-down-icon { position: absolute; bottom: 120px; color: var(--secondary-yellow); font-size: 2rem; animation: bounce 2s infinite; text-decoration: none; }
 
-        #gallery-section { min-height: 100vh; width: 100%; padding: 100px 0 150px; opacity: 0; transition: 1.5s 0.8s; }
-        .gallery-title { text-align: center; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
-
-        /* --- GALLERY DRAG --- */
-        .scroll-container { display: flex; gap: 30px; padding: 0 8%; overflow-x: auto; scrollbar-width: none; cursor: grab; }
-        .scroll-container:active { cursor: grabbing; }
+        /* --- STEP 1: HORIZONTAL GALLERY --- */
+        #gallery-section { padding: 100px 0; opacity: 0; transition: 1.5s 0.8s; }
+        .gallery-title { text-align: center; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; font-size: 1.5rem; }
+        
+        .scroll-container { 
+            display: flex; gap: 20px; padding: 0 6%; overflow-x: auto; 
+            scrollbar-width: none; cursor: grab;
+        }
         .scroll-container::-webkit-scrollbar { display: none; }
 
         .folder-card { 
-            flex: 0 0 clamp(280px, 35vw, 420px); height: clamp(200px, 30vh, 280px); 
-            background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px); border-radius: 20px; position: relative; overflow: hidden;
+            flex: 0 0 300px; height: 400px; 
+            background: #0a0a0a; border: 1px solid #222;
+            border-radius: 15px; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 20px; transition: 0.4s ease;
         }
-        .folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; pointer-events: none;}
-        .folder-card h3 { position: absolute; bottom: 20px; left: 20px; color: var(--secondary-yellow); text-transform: uppercase; }
+        .folder-card:hover { border-color: var(--accent-cyan); transform: translateY(-10px); }
+        .folder-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 1; }
+        .folder-card h3 { position: relative; z-index: 2; color: #fff; text-transform: uppercase; font-size: 1rem; text-align: center; }
 
-        /* --- BOOKING SECTION --- */
-        #booking-section { padding: 100px 6% 150px; background: #000; text-align: center; opacity: 0; transition: 1.5s;}
-        #booking-section h2 { color: #fff; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 40px; font-size: 1.8rem; }
-        .booking-form { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
-        .booking-form input, .booking-form select, .booking-form textarea {
-            padding: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; border-radius: 5px; font-family: 'Inter', sans-serif;
-        }
-        .booking-form button {
-            padding: 15px; background: none; border: 1px solid #00ffff; color: #00ffff; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; margin-top: 10px;
-        }
-        .booking-form button:hover { background: #00ffff; color: #000; }
-        .contact-info { margin-top: 60px; color: #fff; }
-        .contact-info p { margin-bottom: 12px; font-size: 0.95rem; color: #ccc; }
-        .contact-info i { margin-right: 10px; color: var(--secondary-yellow); }
-
-        /* --- SUB MENU PANEL --- */
+        /* --- STEP 2: VERTICAL SUB MENU PANEL --- */
         .panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 5000; visibility: hidden; opacity: 0; 
-            transition: 0.5s ease-in-out; padding: 100px 8% 80px; overflow-y: auto;
+            transition: 0.5s ease-in-out; padding: 80px 6%; overflow-y: auto;
         }
         .panel.active { visibility: visible; opacity: 1; }
+        .sub-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 25px; margin-top: 40px; 
+        }
+        .sub-card { background: #111; border-radius: 15px; padding: 15px; text-align: center; border: 1px solid #222; }
+        .sub-card img, .sub-card video { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 15px; cursor: zoom-in; }
+        .sub-card button { background: var(--secondary-yellow); color: #000; border: none; width: 100%; padding: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; }
 
-        .close-btn { 
-            position: fixed; top: 20px; right: 20px; font-size: 3rem; 
-            color: var(--secondary-yellow); cursor: pointer; z-index: 6000 !important; 
-            background: rgba(0,0,0,0.5); width: 60px; height: 60px;
-            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+        /* --- BOOKING SECTION --- */
+        #booking-section { padding: 100px 6%; background: #000; text-align: center; opacity: 0; transition: 1.5s;}
+        .booking-form { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
+        .booking-form input, .booking-form select, .booking-form textarea {
+            padding: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; border-radius: 5px;
+        }
+        .booking-form button {
+            padding: 15px; background: none; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; cursor: pointer; text-transform: uppercase;
         }
 
-        .sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-        .sub-card { background: #111; border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #222; }
-        .sub-card img, .sub-card video { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 20px; cursor: zoom-in; }
-        .sub-card button { background: var(--secondary-yellow); color: #000; border: none; width: 100%; padding: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; }
-
-        /* --- LIGHTBOX --- */
-        #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; cursor: pointer; }
-
-        /* --- FOOTER FIXED --- */
+        /* --- FOOTER --- */
         footer {
             position: fixed; bottom: 0; width: 100%; height: 60px;
             background: var(--secondary-yellow); display: flex; align-items: center;
             justify-content: center; z-index: 1000; opacity: 0; transition: 1s;
         }
-        .footer-fixed { display: flex; align-items: center; gap: 40px; }
-        .social-icons { display: flex; gap: 20px; }
-        .social-icons a { color: #000; font-size: 1.4rem; transition: 0.3s; }
-        .social-icons a:hover { transform: translateY(-3px); }
-        .phone-num { font-weight: 900; color: #000; font-size: 1.1rem; letter-spacing: 1px; }
-
-        @keyframes cinematicReveal { 0% { opacity: 0; filter: blur(20px); } 100% { opacity: 1; filter: blur(0); } }
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } }
-
-        body.loaded #intro-layer { opacity: 0; visibility: hidden; }
+        .footer-fixed { display: flex; align-items: center; gap: 40px; color: #000; font-weight: 900; }
+        
+        /* STATE STYLES */
         body.loaded nav, body.loaded #hero-section, body.loaded #gallery-section, body.loaded #booking-section, body.loaded footer { opacity: 1; }
+        .close-btn { position: fixed; top: 20px; right: 20px; font-size: 3rem; color: var(--secondary-yellow); cursor: pointer; z-index: 6000; }
+        #fullView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; }
     </style>
 </head>
 <body id="body-main">
 
     <div id="video-bg-container">
         <video id="bgVideo" autoplay muted loop playsinline><source src="akbg.mp4" type="video/mp4"></video>
-    </div>
-
-    <div id="intro-layer">
-        <div class="intro-logo">AK Picture</div>
-        <div class="intro-tagline">Design Agency</div>
     </div>
 
     <nav>
@@ -165,8 +128,7 @@
 
     <section id="hero-section">
         <h1 class="hero-logo">AK</h1>
-        <p class="hero-tag">Design Agency</p>
-        <a href="#gallery-section" class="scroll-down-icon"><i class="fas fa-chevron-down"></i></a>
+        <p style="letter-spacing: 10px; text-transform: uppercase;">Design Agency</p>
     </section>
 
     <section id="gallery-section">
@@ -174,80 +136,76 @@
         <div class="scroll-container" id="mainTrack"></div>
     </section>
 
+    <div id="subGallery" class="panel">
+        <span class="close-btn" onclick="closeSub()">&times;</span>
+        <h2 id="subHeader" style="color: var(--secondary-yellow); text-transform: uppercase; text-align:center; font-size: 2rem;">Category</h2>
+        <div class="sub-grid" id="verticalGrid"></div>
+    </div>
+
     <section id="booking-section">
-        <h2>Book Our Services</h2>
-        <form class="booking-form" id="whatsappForm">
+        <h2 style="margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px;">Book Our Services</h2>
+        <form class="booking-form">
             <input type="text" id="custName" placeholder="Your Name" required>
             <input type="text" id="custPhone" placeholder="Phone Number" required>
             <select id="custService" required>
                 <option value="" disabled selected>Select a Service</option>
                 <option value="Album Design">Album Design</option>
+                <option value="Cinematic Videos">Branding</option>
+                <option value="Invitation Cards">Invitation Card</option>
+		<option value="Packaging Product Design">Album Design</option>
+                <option value="Posters">Branding</option>
+                <option value="Illustration">Invitation Card</option>
+		<option value="Web design">Album Design</option>
                 <option value="Branding">Branding</option>
-                <option value="Invitation Card">Invitation Card</option>
-                <option value="Packaging Design">Packaging Design</option>
-                <option value="Cinematic Video">Cinematic Video</option>
+                <option value="Calender Design & Print">Invitation Card</option>
             </select>
-            <textarea id="custProject" placeholder="Tell us about your project..." rows="5"></textarea>
+            <textarea id="custProject" placeholder="Your requirements..." rows="4"></textarea>
             <button type="button" onclick="sendToWhatsApp()">Send Enquiry</button>
         </form>
-
-        <div class="contact-info">
-            <p><i class="fas fa-map-marker-alt"></i> Studio: Tenkasi - Sivakasi</p>
-            <p><i class="fas fa-phone-alt"></i> Phone: 6374506309</p>
-            <p><i class="fas fa-envelope"></i> Email: arunarun7801@gmail.com</p>
-        </div>
     </section>
 
-    <div id="subGallery" class="panel">
-        <span class="close-btn" onclick="closeSub()">&times;</span>
-        <h2 id="subHeader" style="color: var(--secondary-yellow); text-transform: uppercase; text-align:center; font-size: 2rem; margin-bottom: 30px;">Category</h2>
-        <div class="sub-grid" id="verticalGrid"></div>
-    </div>
-
     <div id="fullView" onclick="closeFullView()">
-        <span style="position:absolute; top:20px; right:30px; color:white; font-size:40px;">&times;</span>
         <div id="fullContent" style="max-width:90%; max-height:80%;"></div>
     </div>
 
     <footer>
         <div class="footer-fixed">
-            <div class="social-icons">
-                <a href="https://wa.me/916374506309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <div style="display:flex; gap:20px;">
+                <a href="https://wa.me/916374506309" target="_blank" style="color:#000;"><i class="fab fa-whatsapp"></i></a>
+                <i class="fab fa-facebook-f"></i>
+                <i class="fa-brands fa-x-twitter"></i>
             </div>
-            <div class="phone-num">6374506309</div>
+            <div>6374506309</div>
         </div>
     </footer>
 
     <script>
         const categories = [
-            { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg","Album (3).jpg", "Album (4).jpg","Album (5).jpg", "Album (6).jpg","akbg.mp4"] },
-            { name: "Branding", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg", "logo (3).jpg"] },
-            { name: "Invitation Card", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
-            { name: "Packging Design", cover: "images/album-cover.jpg", images: ["images/album1.jpg", "images/album2.jpg"] }
+            { name: "Album Design", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg", "Album (3).jpg", "akbg.mp4"] },
+            { name: "Cinematic Videos", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg"] },
+            { name: "Invitation Cards", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
+            { name: "Packaging Product Design", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] },
+	    { name: "Posters", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] },
+	    { name: "Illustration", cover: "Album (1).jpg", images: ["Album (1).jpg", "Album (2).jpg", "Album (3).jpg", "akbg.mp4"] },
+            { name: "Web design", cover: "logo (1).jpg", images: ["logo (1).jpg", "logo (2).jpg"] },
+            { name: "Branding", cover: "images/poster-cover.jpg", images: ["images/p1.jpg", "images/p2.jpg"] },
+            { name: "Calender Design & Print", cover: "images/album-cover.jpg", images: ["images/album1.jpg"] }
         ];
 
-        setTimeout(() => { document.body.classList.add('loaded'); }, 1000);
+        setTimeout(() => { document.body.classList.add('loaded'); }, 500);
 
         const track = document.getElementById('mainTrack');
-        
-        // BUILD CARDS
         categories.forEach((cat,index) => {
             const card = document.createElement('div');
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
-            card.addEventListener('click', () => { 
-                if(!isDragging) openSub(index); 
-            });
+            card.addEventListener('click', () => { if(!isDragging) openSub(index); });
             track.appendChild(card);           
         });
 
-        // DRAG & MOBILE TAP LOGIC
+        // DRAG LOGIC
         let isDown = false, startX, scrollLeft, isDragging = false;
-
         track.addEventListener('mousedown', (e) => { isDown = true; isDragging = false; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-        track.addEventListener('mouseleave', () => isDown = false);
         track.addEventListener('mouseup', () => { isDown = false; });
         track.addEventListener('mousemove', (e) => {
             if (!isDown) return;
@@ -258,15 +216,7 @@
             track.scrollLeft = scrollLeft - walk;
         });
 
-        // MOBILE TOUCH
-        track.addEventListener('touchstart', (e) => { isDragging = false; startX = e.touches[0].pageX - track.offsetLeft; scrollLeft = track.scrollLeft; }, {passive: true});
-        track.addEventListener('touchmove', (e) => {
-            const x = e.touches[0].pageX - track.offsetLeft;
-            const walk = (x - startX);
-            if(Math.abs(walk) > 10) isDragging = true;
-            track.scrollLeft = scrollLeft - walk;
-        }, {passive: true});
-
+        // STEP 2: OPEN VERTICAL GRID
         function openSub(index) {
             document.getElementById('bgVideo').muted = true;
             const cat = categories[index];
@@ -275,21 +225,19 @@
             grid.innerHTML = '';
 
             cat.images.forEach((file, i) => {
-                let mediaHtml = "";
-                if (file.toLowerCase().endsWith('.mp4')) {
-                    mediaHtml = `<video src="${file}" autoplay muted loop playsinline onclick="viewMedia('${file}', 'video', event)"></video>`;
-                } else {
-                    mediaHtml = `<img src="${file}" onclick="viewMedia('${file}', 'img', event)">`;
-                }
-                grid.innerHTML += `<div class="sub-card">${mediaHtml}<p style="font-size:0.75rem; color:#888; margin-bottom:15px; font-weight:700;">${cat.name.toUpperCase()} 0${i+1}</p><button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button></div>`;
+                let mediaHtml = file.toLowerCase().endsWith('.mp4') 
+                    ? `<video src="${file}" autoplay muted loop playsinline onclick="viewMedia('${file}', 'video', event)"></video>`
+                    : `<img src="${file}" onclick="viewMedia('${file}', 'img', event)">`;
+                
+                grid.innerHTML += `<div class="sub-card">${mediaHtml}<p style="font-size:0.7rem; color:#888; margin-bottom:10px;">0${i+1}</p><button onclick="window.open('https://wa.me/916374506309?text=Enquiry%20for%20${cat.name}', '_blank')">ENQUIRY</button></div>`;
             });
             document.getElementById('subGallery').classList.add('active');
-            document.body.style.overflowY = 'hidden'; 
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeSub() { 
             document.getElementById('subGallery').classList.remove('active'); 
-            document.body.style.overflowY = 'auto'; 
+            document.body.style.overflow = 'auto'; 
             const vids = document.querySelectorAll('#verticalGrid video');
             vids.forEach(v => { v.pause(); v.muted = true; });
             closeFullView();
@@ -299,20 +247,17 @@
             event.stopPropagation();
             const view = document.getElementById('fullView');
             const content = document.getElementById('fullContent');
-            if(type === 'video') {
-                content.innerHTML = `<video id="activeFullVid" src="${file}" controls autoplay style="width:100%; max-height:80vh;"></video>`;
-            } else {
-                content.innerHTML = `<img src="${file}" style="width:100%; max-height:80vh; object-fit:contain;">`;
-            }
+            content.innerHTML = type === 'video' 
+                ? `<video id="activeFullVid" src="${file}" controls autoplay style="width:100%; max-height:80vh;"></video>`
+                : `<img src="${file}" style="width:100%; max-height:80vh; object-fit:contain;">`;
             view.style.display = 'flex';
         }
 
         function closeFullView() {
-            const view = document.getElementById('fullView');
             const fv = document.getElementById('activeFullVid');
             if (fv) { fv.pause(); fv.src = ""; }
             document.getElementById('fullContent').innerHTML = "";
-            view.style.display = 'none';
+            document.getElementById('fullView').style.display = 'none';
         }
 
         function sendToWhatsApp() {
@@ -320,10 +265,8 @@
             const phone = document.getElementById('custPhone').value;
             const service = document.getElementById('custService').value;
             const project = document.getElementById('custProject').value;
-
-            if (!name || !phone || !service) { alert("Please fill required fields."); return; }
-
-            const msg = `*NEW ENQUIRY - AK PICTURES*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Project:* ${project}`;
+            if (!name || !phone || !service) { alert("Fill all fields"); return; }
+            const msg = `*ENQUIRY*%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Project:* ${project}`;
             window.open(`https://wa.me/916374506309?text=${msg}`, '_blank');
         }
     </script>
