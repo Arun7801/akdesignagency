@@ -258,16 +258,12 @@
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
             // Fix: Standard click for both mobile/desktop
-            card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
+            card.addEventListener('click', () => { if(!isDragging) openSub(index); });
             track.appendChild(card);            
         });
 
         // DRAG LOGIC
         let isDown = false, startX, scrollLeft, isDragging = false;
-		track.addEventListener('touchstart', (e) => { isDragging = false; startPos = e.touches[0].clientX; }, {passive: true});
-        track.addEventListener('touchmove', (e) => {
-            if(Math.abs(e.touches[0].clientX - startPos) > 10) isDragging = true;
-        }, {passive: true});
         track.addEventListener('mousedown', () => { isDragging = false; });
         track.addEventListener('mousemove', () => { isDragging = true; });
         track.addEventListener('mousedown', (e) => { isDown = true; isDragging = false; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
