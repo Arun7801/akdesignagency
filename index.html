@@ -258,7 +258,7 @@
             card.className = 'folder-card';
             card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
             // Fix: Standard click for both mobile/desktop
-            card.addEventListener('click', (e) => { if(!isDragging) openSub(index); });
+            card.addEventListener('click', (e) => { if(!isDragging) openSub(cat); });
             track.appendChild(card);            
         });
 
