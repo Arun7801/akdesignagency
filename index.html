@@ -251,16 +251,21 @@
         // Intro Timer (Shortened to 3.5 seconds)
         setTimeout(() => { document.body.classList.add('loaded'); }, 3500);
 		
-		// Build Main Gallery
-        const track = document.getElementById('mainTrack');
-        categories.forEach((cat,index) => {
-            const card = document.createElement('div');
-            card.className = 'folder-card';
-            card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
-            // Fix: Standard click for both mobile/desktop
-            card.addEventListener('click', () => { if(!isDragging) openSub(index); });
-            track.appendChild(card);            
-        });
+	// Build Main Gallery
+const track = document.getElementById('mainTrack');
+categories.forEach((cat, index) => {
+    const card = document.createElement('div');
+    card.className = 'folder-card';
+    card.innerHTML = `<img src="${cat.cover}"><h3>${cat.name}</h3>`;
+    
+    // Use 'click' instead of 'onclick'
+    card.addEventListener('click', () => { 
+        if (!isDragging) {
+            openSub(index); 
+        }
+    }); 
+    track.appendChild(card);            
+});
 
         // DRAG LOGIC
         let isDown = false, startX, scrollLeft, isDragging = false;
@@ -277,10 +282,13 @@
             track.scrollLeft = scrollLeft - walk;
         });
 
-        // STEP 2: OPEN VERTICAL GRID
         function openSub(index) {
-            document.getElementById('bgVideo').muted = true;
-            const cat = categories[index];
+    // Check if the element exists before trying to mute it
+    const bgVid = document.querySelector('#video-bg-container video');
+    if (bgVid) bgVid.muted = true;
+
+    const cat = categories[index];
+    // ... rest of your code
             document.getElementById('subHeader').innerText = cat.name;
             const grid = document.getElementById('verticalGrid');
             grid.innerHTML = '';
